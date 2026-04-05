@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   useEffect,
   useRef,
@@ -101,13 +102,22 @@ function DiamondLogoSilhouette() {
   );
 }
 
-function GlassPanel({ style = {} }: { style?: CSSProperties }) {
+function GlassPanel({
+  style = {},
+  className = "",
+}: {
+  style?: CSSProperties;
+  className?: string;
+}) {
   return (
-    <div style={{
+    <div
+      className={className}
+      style={{
       position: "relative", overflow: "hidden",
       background: "linear-gradient(135deg, rgba(201,168,76,0.03) 0%, rgba(255,255,255,0.02) 40%, rgba(163,186,214,0.04) 100%)",
       border: "1px solid rgba(201,168,76,0.08)", ...style,
-    }}>
+    }}
+    >
       <div style={{ position: "absolute", top: 0, left: "30%", width: "40%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2), transparent)" }} />
       <div style={{ position: "absolute", bottom: "30%", left: 0, width: "1px", height: "30%", background: "linear-gradient(180deg, transparent, rgba(201,168,76,0.12), transparent)" }} />
     </div>
@@ -154,6 +164,7 @@ function PhotoBox({
   shortLabel,
   imageBrightness,
   style = {},
+  className = "",
   children,
   onClick,
 }: {
@@ -162,6 +173,7 @@ function PhotoBox({
   shortLabel?: string;
   imageBrightness?: number;
   style?: CSSProperties;
+  className?: string;
   children?: ReactNode;
   onClick?: () => void;
 }) {
@@ -172,14 +184,18 @@ function PhotoBox({
     overflow: "hidden",
     ...style,
   };
-  const label = shortLabel ?? placeholderLabel(type);
+  const displayLabel = shortLabel?.trim() ? shortLabel : placeholderLabel(type);
+  const photoAlt =
+    imageSrc != null
+      ? `${displayLabel} — Exquisite Custom Glass portfolio photo`
+      : "";
   const inner = (
     <>
       {imageSrc ? (
         <>
           <Image
             src={imageSrc}
-            alt=""
+            alt={photoAlt}
             fill
             sizes="(max-width: 900px) 100vw, 55vw"
             quality={85}
@@ -232,7 +248,7 @@ function PhotoBox({
           pointerEvents: "none",
         }}
       >
-        {label}
+        {displayLabel}
       </div>
       {!imageSrc && (
         <div
@@ -254,6 +270,7 @@ function PhotoBox({
     return (
       <button
         type="button"
+        className={className}
         onClick={onClick}
         style={{
           ...boxStyle,
@@ -272,64 +289,173 @@ function PhotoBox({
       </button>
     );
   }
-  return <div style={boxStyle}>{inner}</div>;
+  return (
+    <div className={className} style={boxStyle}>
+      {inner}
+    </div>
+  );
 }
 
 function Nav({ scrolled }: { scrolled: boolean }) {
   const links = ["Portfolio", "Services", "Process", "About", "Contact"];
+  const [navOpen, setNavOpen] = useState(false);
+
+  useEffect(() => {
+    if (navOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [navOpen]);
+
+  const closeNav = () => setNavOpen(false);
+  const linkStyle: CSSProperties = {
+    fontFamily: "var(--font-body), sans-serif",
+    fontSize: "10px",
+    letterSpacing: "2.5px",
+    textTransform: "uppercase",
+    color: "rgba(255,255,255,0.45)",
+    textDecoration: "none",
+    transition: "color 0.3s",
+    cursor: "pointer",
+  };
+  const mobileLinkStyle: CSSProperties = {
+    ...linkStyle,
+    display: "block",
+    padding: "16px 0",
+    fontSize: "12px",
+    letterSpacing: "3px",
+    borderBottom: "1px solid rgba(201,168,76,0.12)",
+  };
+
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      padding: scrolled ? "12px 28px 12px 12px" : "20px 28px 20px 12px",
-      display: "flex", justifyContent: "space-between", alignItems: "center", gap: "20px",
-      background: scrolled ? "rgba(10,22,40,0.95)" : "transparent",
-      backdropFilter: scrolled ? "blur(20px)" : "none",
-      borderBottom: scrolled ? "1px solid rgba(201,168,76,0.08)" : "none",
-      transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-        <DiamondLogo size={36} />
-        <div style={{
-          borderLeft: "1px solid rgba(201,168,76,0.2)", paddingLeft: "8px", height: "32px",
-          display: "flex", flexDirection: "column", justifyContent: "center",
-        }}>
-          <div style={{ fontFamily: "var(--font-display), serif", fontSize: "15px", fontWeight: 400, letterSpacing: "3px", color: "#fff", lineHeight: 1.1 }}>EXQUISITE</div>
-          <div style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "7.5px", letterSpacing: "4px", color: "#C9A84C", textTransform: "uppercase", marginTop: "2px" }}>Custom Glass</div>
-        </div>
-      </div>
-      <div style={{ display: "flex", gap: "18px", alignItems: "center", flexShrink: 0 }}>
-        {links.map(l => (
-          <a key={l} href={`#${l.toLowerCase()}`} style={{
-            fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2.5px",
-            textTransform: "uppercase", color: "rgba(255,255,255,0.45)", textDecoration: "none",
-            transition: "color 0.3s", cursor: "pointer",
+    <>
+      <nav
+        aria-label="Primary"
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+          padding: scrolled ? "12px 16px 12px 12px" : "16px 16px 16px 12px",
+          display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px",
+          background: scrolled ? "rgba(10,22,40,0.95)" : "transparent",
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(201,168,76,0.08)" : "none",
+          transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      >
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0, textDecoration: "none", color: "inherit" }} onClick={closeNav}>
+          <DiamondLogo size={36} />
+          <div style={{
+            borderLeft: "1px solid rgba(201,168,76,0.2)", paddingLeft: "8px", height: "32px",
+            display: "flex", flexDirection: "column", justifyContent: "center",
+          }}>
+            <div style={{ fontFamily: "var(--font-display), serif", fontSize: "15px", fontWeight: 400, letterSpacing: "3px", color: "#fff", lineHeight: 1.1 }}>EXQUISITE</div>
+            <div style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "7.5px", letterSpacing: "4px", color: "#C9A84C", textTransform: "uppercase", marginTop: "2px" }}>Custom Glass</div>
+          </div>
+        </Link>
+        <div className="ecg-nav-desktop" style={{ gap: "18px" }}>
+          {links.map((l) => (
+            <a
+              key={l}
+              href={`#${l.toLowerCase()}`}
+              style={linkStyle}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "#C9A84C";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.45)";
+              }}
+            >
+              {l}
+            </a>
+          ))}
+          <a href="tel:+19788158354" style={{
+            fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "1px",
+            color: "rgba(255,255,255,0.5)", textDecoration: "none",
+          }}>(978) 815-8354</a>
+          <a href="#contact" style={{
+            fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px",
+            textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
+            padding: "10px 16px", textDecoration: "none", transition: "all 0.3s", flexShrink: 0,
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.color = "#C9A84C";
+            (e.currentTarget as HTMLAnchorElement).style.background = "#d4b85e";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.45)";
+            (e.currentTarget as HTMLAnchorElement).style.background = "#C9A84C";
           }}
-          >{l}</a>
-        ))}
-        <a href="tel:9788158354" style={{
-          fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "1px",
-          color: "rgba(255,255,255,0.5)", textDecoration: "none",
-        }}>(978) 815-8354</a>
-        <a href="#contact" style={{
-          fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px",
-          textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
-          padding: "10px 16px", textDecoration: "none", transition: "all 0.3s", flexShrink: 0,
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.background = "#d4b85e";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.background = "#C9A84C";
-        }}
-        >Free Estimate</a>
-      </div>
-    </nav>
+          >Free Estimate</a>
+        </div>
+        <button
+          type="button"
+          className="ecg-nav-menu-btn"
+          aria-label={navOpen ? "Close menu" : "Open menu"}
+          aria-expanded={navOpen}
+          onClick={() => setNavOpen((o) => !o)}
+        >
+          <span style={{ fontSize: "18px", lineHeight: 1 }} aria-hidden>{navOpen ? "✕" : "☰"}</span>
+        </button>
+      </nav>
+      {navOpen ? (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99,
+            paddingTop: "88px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            paddingBottom: "32px",
+            background: "rgba(10,22,40,0.97)",
+            backdropFilter: "blur(16px)",
+            overflowY: "auto",
+          }}
+        >
+          <nav aria-label="Mobile primary">
+            {links.map((l) => (
+              <a
+                key={l}
+                href={`#${l.toLowerCase()}`}
+                style={mobileLinkStyle}
+                onClick={closeNav}
+              >
+                {l}
+              </a>
+            ))}
+            <a
+              href="tel:+19788158354"
+              style={{ ...mobileLinkStyle, marginTop: "8px" }}
+              onClick={closeNav}
+            >
+              (978) 815-8354
+            </a>
+            <a
+              href="#contact"
+              onClick={closeNav}
+              style={{
+                display: "inline-block",
+                marginTop: "24px",
+                fontFamily: "var(--font-body), sans-serif",
+                fontSize: "11px",
+                letterSpacing: "3px",
+                textTransform: "uppercase",
+                color: "#0A1628",
+                background: "#C9A84C",
+                padding: "14px 28px",
+                textDecoration: "none",
+              }}
+            >
+              Free Estimate
+            </a>
+          </nav>
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -337,18 +463,21 @@ function Hero() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { setTimeout(() => setLoaded(true), 200); }, []);
   return (
-    <section style={{
+    <section
+      className="ecg-hero-pad"
+      style={{
       position: "relative", minHeight: "100vh", display: "flex",
       flexDirection: "column", justifyContent: "flex-end",
-      padding: "0 40px 80px", overflow: "hidden", background: "#0A1628",
-    }}>
+      overflow: "hidden", background: "#0A1628",
+    }}
+    >
       <div
         aria-hidden
         style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}
       >
         <Image
           src={HERO_IMAGE_SRC}
-          alt=""
+          alt="Luxury bathroom with custom frameless glass shower — Exquisite Custom Glass, Massachusetts and New Hampshire"
           fill
           priority
           sizes="100vw"
@@ -378,21 +507,30 @@ function Hero() {
         />
       </div>
       {/* Decorative glass panels */}
-      <GlassPanel style={{
+      <GlassPanel
+        className="ecg-hero-decor"
+        style={{
         position: "absolute", top: "14%", right: "7%", width: "280px", height: "400px",
         opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(20px)",
         transition: "all 1.5s cubic-bezier(0.16,1,0.3,1) 1.4s",
-      }} />
-      <GlassPanel style={{
+      }}
+      />
+      <GlassPanel
+        className="ecg-hero-decor"
+        style={{
         position: "absolute", top: "22%", right: "22%", width: "140px", height: "240px",
         opacity: loaded ? 0.6 : 0, transform: loaded ? "none" : "translateY(15px)",
         transition: "all 1.5s cubic-bezier(0.16,1,0.3,1) 1.7s",
-      }} />
-      <div style={{
+      }}
+      />
+      <div
+        className="ecg-hero-decor"
+        style={{
         position: "absolute", top: "30%", left: "5%", width: "30%", height: "1px",
         background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 50%, transparent)",
         opacity: loaded ? 1 : 0, transition: "opacity 2s ease 1.2s",
-      }} />
+      }}
+      />
       <div style={{
         position: "relative", zIndex: 2, maxWidth: "820px",
         marginBottom: "clamp(96px, 12vh, 132px)",
@@ -422,11 +560,13 @@ function Hero() {
           Custom frameless shower enclosures, glass railings, architectural mirrors, and bespoke glass installations.
           Every piece is measured, fabricated, and installed by our team.
         </p>
-        <div style={{
-          display: "flex", gap: "20px", alignItems: "center",
+        <div
+          className="ecg-hero-cta"
+          style={{
           opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(20px)",
           transition: "all 0.9s cubic-bezier(0.16,1,0.3,1) 1.2s",
-        }}>
+        }}
+        >
           <a href="#contact" style={{
             fontFamily: "var(--font-body), sans-serif", fontSize: "11px", letterSpacing: "3px",
             textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
@@ -458,21 +598,25 @@ function Hero() {
           >View Our Work</a>
         </div>
       </div>
-      <div style={{
+      <div
+        className="ecg-hero-stats"
+        style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
-        display: "flex", borderTop: "1px solid rgba(201,168,76,0.12)",
         opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.6s",
-      }}>
+      }}
+      >
         {[
           { n: "100%", l: "Custom Fabricated" },
           { n: "2,400+", l: "Installations" },
           { n: "MA & NH", l: "Service Area" },
           { n: "Lifetime", l: "Warranty" },
         ].map((s, i) => (
-          <div key={i} style={{
-            flex: 1, padding: "22px 40px",
+          <div
+            key={i}
+            style={{
             borderRight: i < 3 ? "1px solid rgba(201,168,76,0.08)" : "none",
-          }}>
+          }}
+          >
             <div style={{ fontFamily: "var(--font-display), serif", fontSize: "22px", fontWeight: 400, color: "#C9A84C" }}>{s.n}</div>
             <div style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.3)", marginTop: "4px" }}>{s.l}</div>
           </div>
@@ -484,10 +628,10 @@ function Hero() {
 
 function CraftInterlude() {
   return (
-    <section style={{ background: "#0A1628", padding: "100px 40px", position: "relative", overflow: "hidden" }}>
+    <section className="ecg-s-pad-sm" style={{ background: "#0A1628", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 60% 80% at 50% 50%, rgba(201,168,76,0.03) 0%, transparent 70%)" }} />
       <Fade>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "60px", alignItems: "center", maxWidth: "1000px", margin: "0 auto" }}>
+        <div className="ecg-craft-grid">
           <div style={{ textAlign: "right" }}>
             <p style={{
               fontFamily: "var(--font-display), serif", fontSize: "clamp(20px, 2.5vw, 30px)",
@@ -672,10 +816,10 @@ function Portfolio() {
   ];
   const p = projects[active];
   return (
-    <section id="portfolio" style={{ background: "#0c1a30", padding: "120px 40px" }}>
+    <section id="portfolio" className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
       <Fade>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "50px" }}>
+        <div className="ecg-portfolio-header">
           <div>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C" }}>Selected Projects</span>
             <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 400, color: "#fff", margin: "10px 0 0" }}>
@@ -688,19 +832,20 @@ function Portfolio() {
         </div>
       </Fade>
       <Fade delay={0.1}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "0", border: "1px solid rgba(201,168,76,0.1)", minHeight: "480px" }}>
+        <div className="ecg-portfolio-grid">
           <PhotoBox
             type={p.type}
             imageSrc={p.imageSrc}
             shortLabel={p.shortLabel}
             imageBrightness={p.imageBrightness}
+            className="ecg-portfolio-photo"
             style={{ minHeight: "480px" }}
           >
             <div style={{ position: "absolute", bottom: "24px", left: "24px", zIndex: 3, fontFamily: "var(--font-display), serif", fontSize: "80px", fontWeight: 400, color: "rgba(201,168,76,0.06)", lineHeight: 1 }}>
               {String(active + 1).padStart(2, "0")}
             </div>
           </PhotoBox>
-          <div style={{ padding: "50px 45px", display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(10,22,40,0.5)" }}>
+          <div className="ecg-portfolio-copy" style={{ display: "flex", flexDirection: "column", justifyContent: "center", background: "rgba(10,22,40,0.5)" }}>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "#C9A84C", marginBottom: "14px" }}>{p.loc}</span>
             <h3 style={{ fontFamily: "var(--font-display), serif", fontSize: "28px", fontWeight: 400, color: "#fff", margin: "0 0 20px", lineHeight: 1.3 }}>{p.title}</h3>
             <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "13px", lineHeight: 1.85, color: "rgba(255,255,255,0.4)", margin: "0 0 28px" }}>{p.desc}</p>
@@ -715,7 +860,7 @@ function Portfolio() {
             </div>
             <div style={{ display: "flex", gap: "6px" }}>
               {projects.map((_, i) => (
-                <button key={i} onClick={() => setActive(i)} style={{
+                <button type="button" key={i} onClick={() => setActive(i)} style={{
                   width: i === active ? "44px" : "20px", height: "2px",
                   background: i === active ? "#C9A84C" : "rgba(255,255,255,0.12)",
                   border: "none", cursor: "pointer", padding: 0, transition: "all 0.4s",
@@ -756,7 +901,7 @@ function Services() {
     { n: "04", title: "Glass Walls & Partitions", desc: "Interior glass walls and room dividers for residential and commercial spaces. Frameless or channel-mounted systems that preserve light flow while defining separate areas.", feats: ["Floor to Ceiling", "Frosted & Textured", "Office & Residential"] },
   ];
   return (
-    <section id="services" style={{ background: "#0A1628", padding: "120px 40px", position: "relative", overflow: "hidden" }}>
+    <section id="services" className="ecg-s-pad" style={{ background: "#0A1628", position: "relative", overflow: "hidden" }}>
       <div
         aria-hidden
         style={{
@@ -783,11 +928,11 @@ function Services() {
       </Fade>
       {svcs.map((s, i) => (
         <Fade key={i} delay={i * 0.06}>
-          <div onMouseEnter={() => setHov(i)} onMouseLeave={() => setHov(null)} style={{
-            display: "grid", gridTemplateColumns: "50px 1fr 1fr", gap: "36px",
-            padding: "36px 0", alignItems: "start",
-            borderBottom: "1px solid rgba(255,255,255,0.05)", cursor: "default",
-          }}>
+          <div
+            className="ecg-services-row"
+            onMouseEnter={() => setHov(i)}
+            onMouseLeave={() => setHov(null)}
+          >
             <span style={{ fontFamily: "var(--font-display), serif", fontSize: "14px", color: "rgba(201,168,76,0.4)" }}>{s.n}</span>
             <div>
               <h3 style={{
@@ -819,7 +964,7 @@ function WhyECG() {
     { icon: "\u25CB", title: "Lifetime Warranty", desc: "We stand behind our work. Every installation is backed by our lifetime craftsmanship guarantee." },
   ];
   return (
-    <section style={{ background: "#0c1a30", padding: "100px 40px" }}>
+    <section className="ecg-s-pad-sm" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "60px" }} />
       <Fade>
         <div style={{ textAlign: "center", marginBottom: "56px" }}>
@@ -838,7 +983,7 @@ function WhyECG() {
           />
         </div>
       </Fade>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "rgba(201,168,76,0.06)" }}>
+      <div className="ecg-why-grid">
         {items.map((item, i) => (
           <Fade key={i} delay={i * 0.08}>
             <div style={{ background: "#0c1a30", padding: "44px 32px", textAlign: "center" }}>
@@ -861,11 +1006,11 @@ function Process() {
     { n: "04", t: "Installation", d: "Our crew handles the full installation, typically in a single visit. We protect your space, install with care, clean up completely, and walk you through maintenance." },
   ];
   return (
-    <section id="process" style={{ background: "#0A1628", padding: "120px 40px" }}>
+    <section id="process" className="ecg-s-pad" style={{ background: "#0A1628" }}>
       <PLine style={{ marginBottom: "70px" }} />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px" }}>
+      <div className="ecg-process-grid">
         <Fade>
-          <div style={{ position: "sticky", top: "130px" }}>
+          <div className="ecg-process-sticky">
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>How We Work</span>
             <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 400, color: "#fff", margin: "0 0 20px", lineHeight: 1.15 }}>
               Measured{" "}
@@ -942,7 +1087,7 @@ function Testimonials() {
   ];
   const t = ts[a];
   return (
-    <section style={{ background: "#0c1a30", padding: "120px 40px" }}>
+    <section className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
       <Fade>
         <div style={{ maxWidth: "720px", margin: "0 auto", textAlign: "center" }}>
@@ -958,7 +1103,7 @@ function Testimonials() {
           <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>{t.l} &middot; {t.p}</span>
           <div style={{ display: "flex", gap: "6px", justifyContent: "center", marginTop: "40px" }}>
             {ts.map((_, i) => (
-              <button key={i} onClick={() => setA(i)} style={{
+              <button type="button" key={i} onClick={() => setA(i)} style={{
                 width: i === a ? "44px" : "20px", height: "2px",
                 background: i === a ? "#C9A84C" : "rgba(255,255,255,0.1)",
                 border: "none", cursor: "pointer", padding: 0, transition: "all 0.4s",
@@ -973,9 +1118,9 @@ function Testimonials() {
 
 function About() {
   return (
-    <section id="about" style={{ background: "#0A1628", padding: "120px 40px" }}>
+    <section id="about" className="ecg-s-pad" style={{ background: "#0A1628" }}>
       <PLine style={{ marginBottom: "70px" }} />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "70px", alignItems: "start" }}>
+      <div className="ecg-about-grid">
         <Fade>
           <div>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>About ECG</span>
@@ -988,7 +1133,7 @@ function About() {
             <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", lineHeight: 1.85, color: "rgba(255,255,255,0.4)", margin: "0 0 36px" }}>
               Every project is fully custom. No templates, no off-the-shelf solutions. Our team handles measurement, fabrication, and installation in-house so nothing is lost between steps.
             </p>
-            <div style={{ display: "flex", gap: "36px" }}>
+            <div className="ecg-about-badges">
               {["Licensed & Insured", "Locally Owned", "Lifetime Warranty"].map((item, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <span style={{
@@ -1003,7 +1148,7 @@ function About() {
           </div>
         </Fade>
         <Fade delay={0.15}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", height: "380px" }}>
+          <div className="ecg-about-photos">
             <PhotoBox
               type="railing1"
               imageSrc="/gallery/about-glazier-istock.jpg"
@@ -1044,7 +1189,7 @@ function FAQ() {
     { q: "Do you provide a warranty?", a: "Every installation comes with our lifetime craftsmanship warranty covering the seal, hardware mounting, and fit. Glass carries a manufacturer warranty against defects. We stand behind our work completely." },
   ];
   return (
-    <section style={{ background: "#0c1a30", padding: "120px 40px" }}>
+    <section className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
       <Fade>
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
@@ -1056,10 +1201,15 @@ function FAQ() {
           </div>
           {faqs.map((faq, i) => (
             <div key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <button onClick={() => setOpen(open === i ? null : i)} style={{
+              <button
+                type="button"
+                aria-expanded={open === i}
+                onClick={() => setOpen(open === i ? null : i)}
+                style={{
                 width: "100%", background: "none", border: "none", cursor: "pointer",
                 padding: "24px 0", display: "flex", justifyContent: "space-between", alignItems: "center", textAlign: "left",
-              }}>
+              }}
+              >
                 <span style={{
                   fontFamily: "var(--font-display), serif", fontSize: "17px", fontWeight: 400,
                   color: open === i ? "#C9A84C" : "rgba(255,255,255,0.7)", transition: "color 0.3s", paddingRight: "20px",
@@ -1093,10 +1243,10 @@ function ServiceArea() {
     "Newburyport", "Andover", "Nashua NH", "Manchester NH", "Portsmouth NH",
     "Hampton NH", "Seacoast NH", "Lowell", "Lawrence", "Salem", "Gloucester"];
   return (
-    <section style={{ background: "#0A1628", padding: "100px 40px" }}>
+    <section className="ecg-s-pad-sm" style={{ background: "#0A1628" }}>
       <PLine style={{ marginBottom: "60px" }} />
       <Fade>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center" }}>
+        <div className="ecg-service-area-grid">
           <div>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>Where We Work</span>
             <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(28px, 3vw, 42px)", fontWeight: 400, color: "#fff", margin: "0 0 20px" }}>
@@ -1115,12 +1265,15 @@ function ServiceArea() {
               ))}
             </div>
           </div>
-          <div style={{
+          <div
+            className="ecg-service-area-map"
+            style={{
             height: "360px", position: "relative",
             background: "linear-gradient(160deg, rgba(12,26,48,0.8), rgba(10,22,40,1))",
             border: "1px solid rgba(201,168,76,0.08)", overflow: "hidden",
-          }}>
-            <svg width="100%" height="100%" viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg">
+          }}
+          >
+            <svg width="100%" height="100%" viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" aria-hidden>
               <defs>
                 <radialGradient id="rad" cx="55%" cy="45%">
                   <stop offset="0%" stopColor="rgba(201,168,76,0.08)" />
@@ -1162,9 +1315,9 @@ function Contact() {
     padding: "13px 0", outline: "none", width: "100%", transition: "border-color 0.3s", letterSpacing: "0.5px",
   });
   return (
-    <section id="contact" style={{ background: "#0c1a30", padding: "120px 40px" }}>
+    <section id="contact" className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px" }}>
+      <div className="ecg-contact-grid">
         <Fade>
           <div>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>Start Your Project</span>
@@ -1190,7 +1343,7 @@ function Contact() {
         </Fade>
         <Fade delay={0.12}>
           <div style={{ display: "flex", flexDirection: "column", gap: "28px", paddingTop: "16px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "28px" }}>
+            <div className="ecg-contact-name-row">
               {["First Name", "Last Name"].map(label => (
                 <div key={label}>
                   <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>{label}</label>
@@ -1247,8 +1400,8 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer style={{ background: "#07101f", padding: "50px 40px 36px", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+    <footer className="ecg-footer-pad" style={{ background: "#07101f", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
+      <div className="ecg-footer-flex">
         <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
           <DiamondLogo size={30} opacity={0.5} />
           <div>
