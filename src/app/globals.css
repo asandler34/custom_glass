@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+
+html {
+  scroll-behavior: smooth;
+}
+
+.ecg-root ::selection {
+  background: rgba(201, 168, 76, 0.3);
+  color: #fff;
+}
+
+.ecg-root select option {
+  background: #0a1628;
+  color: #fff;
+}
+
+.ecg-root input::placeholder,
+.ecg-root textarea::placeholder {
+  color: rgba(255, 255, 255, 0.12);
+}
+
+:root {
+  --palette-navy-deep: #0a1628;
+  --palette-navy-mid: #1b2b4b;
+  --palette-navy-accent: #2e4a7a;
+  --palette-gold: #c9a84c;
+  --palette-gold-light: #e8cc7a;
+  --palette-white-warm: #f8f5f0;
+  --palette-white-pure: #ffffff;
+  --palette-charcoal: #1a1a1a;
+  --palette-gray-light: #e8e4de;
+  --palette-glass: rgba(255, 255, 255, 0.08);
+
+  --color-navy-deep: var(--palette-navy-deep);
+  --color-navy-mid: var(--palette-navy-mid);
+  --color-navy-accent: var(--palette-navy-accent);
+  --color-gold: var(--palette-gold);
+  --color-gold-light: var(--palette-gold-light);
+  --color-white-warm: var(--palette-white-warm);
+  --color-white-pure: var(--palette-white-pure);
+  --color-charcoal: var(--palette-charcoal);
+  --color-gray-light: var(--palette-gray-light);
+  --color-glass: var(--palette-glass);
+
+  --background: var(--color-white-warm);
+  --foreground: var(--color-charcoal);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.7;
+}
