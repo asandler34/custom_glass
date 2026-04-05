@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   useEffect,
   useRef,
@@ -8,6 +9,12 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+
+/**
+ * Hero: bathroom interior — optimized local asset (max ~1600px JPEG, ~400KB).
+ * Source photo: Michael Waddell / Unsplash (see project notes for attribution).
+ */
+const HERO_IMAGE_SRC = "/gallery/hero-bathroom.jpg";
 
 function useInView(
   opts: IntersectionObserverInit = {},
@@ -69,6 +76,31 @@ function DiamondLogo({ size = 40, opacity = 1 }: { size?: number; opacity?: numb
   );
 }
 
+/** Same geometry as `DiamondLogo`, single dark ink — watermark only (no wordmark). */
+function DiamondLogoSilhouette() {
+  const ink = "rgba(2, 6, 14, 0.48)";
+  return (
+    <svg
+      viewBox="0 0 92 92"
+      width="100%"
+      height="100%"
+      preserveAspectRatio="xMidYMid meet"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      style={{ display: "block" }}
+    >
+      <g transform="translate(46, 46)">
+        <polygon points="0,-42 42,0 0,42 -42,0" fill="none" stroke={ink} strokeWidth="2" strokeLinejoin="miter" />
+        <line x1="-30" y1="-12" x2="30" y2="-12" stroke={ink} strokeWidth="1.25" strokeLinecap="square" />
+        <line x1="0" y1="-42" x2="-30" y2="-12" stroke={ink} strokeWidth="1.25" strokeLinecap="square" />
+        <line x1="0" y1="-42" x2="30" y2="-12" stroke={ink} strokeWidth="1.25" strokeLinecap="square" />
+        <line x1="0" y1="-12" x2="0" y2="42" stroke={ink} strokeWidth="1.25" strokeLinecap="square" />
+        <polygon points="0,-42 30,-12 42,0" fill={ink} stroke="none" opacity={0.9} />
+      </g>
+    </svg>
+  );
+}
+
 function GlassPanel({ style = {} }: { style?: CSSProperties }) {
   return (
     <div style={{
@@ -89,6 +121,7 @@ const PLACEHOLDERS = {
   railing2: "linear-gradient(145deg, #152536 0%, #1e3348 40%, #162a3c 100%)",
   partition: "linear-gradient(145deg, #1c2c3e 0%, #253a4e 40%, #1a2a3c 100%)",
   balcony: "linear-gradient(145deg, #222e3c 0%, #2a3a4a 40%, #1e2e40 100%)",
+  mirror: "linear-gradient(155deg, #1a2230 0%, #252f42 40%, #161d2a 100%)",
 };
 
 type PlaceholderKey = keyof typeof PLACEHOLDERS;
@@ -99,67 +132,121 @@ type PortfolioEntry = {
   type: PlaceholderKey;
   desc: string;
   tags: string[];
+  /** Real photo under `/public/gallery` (compressed JPEGs, typically under 250KB) */
+  imageSrc?: string;
+  shortLabel?: string;
+  /** CSS brightness() multiplier for photos that read hotter than on-site JPEGs (default: no filter). */
+  imageBrightness?: number;
 };
+
+function placeholderLabel(type: PlaceholderKey): string {
+  if (type === "shower") return "Shower Enclosure";
+  if (type === "railing1") return "Glass Railing";
+  if (type === "railing2") return "Balcony Railing";
+  if (type === "partition") return "Glass Partition";
+  if (type === "mirror") return "Custom Mirror";
+  return "High Rise Railing";
+}
 
 function PhotoBox({
   type,
+  imageSrc,
+  shortLabel,
+  imageBrightness,
   style = {},
   children,
   onClick,
 }: {
   type: PlaceholderKey;
+  imageSrc?: string;
+  shortLabel?: string;
+  imageBrightness?: number;
   style?: CSSProperties;
   children?: ReactNode;
   onClick?: () => void;
 }) {
-  const bg = PLACEHOLDERS[type] ?? PLACEHOLDERS.shower;
+  const bg = imageSrc ? "#121a28" : (PLACEHOLDERS[type] ?? PLACEHOLDERS.shower);
   const boxStyle: CSSProperties = {
     background: bg,
     position: "relative",
     overflow: "hidden",
     ...style,
   };
+  const label = shortLabel ?? placeholderLabel(type);
   const inner = (
     <>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(135deg, transparent 30%, rgba(201,168,76,0.04) 50%, transparent 70%)",
-        }}
-      />
+      {imageSrc ? (
+        <>
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            sizes="(max-width: 900px) 100vw, 55vw"
+            quality={85}
+            style={{
+              objectFit: "cover",
+              objectPosition: "center",
+              zIndex: 0,
+              ...(imageBrightness != null
+                ? {
+                    filter: `brightness(${imageBrightness}) saturate(0.92)`,
+                  }
+                : {}),
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              background:
+                imageBrightness != null
+                  ? "linear-gradient(105deg, rgba(10,22,40,0.45) 0%, transparent 40%), linear-gradient(to top, rgba(10,22,40,0.62) 0%, transparent 48%)"
+                  : "linear-gradient(105deg, rgba(10,22,40,0.35) 0%, transparent 42%), linear-gradient(to top, rgba(10,22,40,0.55) 0%, transparent 50%)",
+            }}
+          />
+        </>
+      ) : (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(135deg, transparent 30%, rgba(201,168,76,0.04) 50%, transparent 70%)",
+          }}
+        />
+      )}
       <div
         style={{
           position: "absolute",
           bottom: "50%",
           left: "50%",
           transform: "translate(-50%, 50%)",
+          zIndex: 2,
           fontFamily: "var(--font-body), sans-serif",
           fontSize: "9px",
           letterSpacing: "3px",
           textTransform: "uppercase",
-          color: "rgba(201,168,76,0.15)",
+          color: imageSrc ? "rgba(201,168,76,0.28)" : "rgba(201,168,76,0.15)",
           whiteSpace: "nowrap",
+          pointerEvents: "none",
         }}
       >
-        {type === "shower" && "Shower Enclosure"}
-        {type === "railing1" && "Glass Railing"}
-        {type === "railing2" && "Balcony Railing"}
-        {type === "partition" && "Glass Partition"}
-        {type === "balcony" && "High Rise Railing"}
+        {label}
       </div>
-      <div
-        style={{
-          position: "absolute",
-          top: "20%",
-          left: "-10%",
-          width: "120%",
-          height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)",
-          transform: "rotate(-15deg)",
-        }}
-      />
+      {!imageSrc && (
+        <div
+          style={{
+            position: "absolute",
+            top: "20%",
+            left: "-10%",
+            width: "120%",
+            height: "1px",
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent)",
+            transform: "rotate(-15deg)",
+          }}
+        />
+      )}
       {children}
     </>
   );
@@ -193,21 +280,24 @@ function Nav({ scrolled }: { scrolled: boolean }) {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-      padding: scrolled ? "12px 40px" : "20px 40px",
-      display: "flex", justifyContent: "space-between", alignItems: "center",
+      padding: scrolled ? "12px 28px 12px 12px" : "20px 28px 20px 12px",
+      display: "flex", justifyContent: "space-between", alignItems: "center", gap: "20px",
       background: scrolled ? "rgba(10,22,40,0.95)" : "transparent",
       backdropFilter: scrolled ? "blur(20px)" : "none",
       borderBottom: scrolled ? "1px solid rgba(201,168,76,0.08)" : "none",
       transition: "all 0.5s cubic-bezier(0.16,1,0.3,1)",
     }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        <DiamondLogo size={44} />
-        <div style={{ borderLeft: "1px solid rgba(201,168,76,0.2)", paddingLeft: "16px", height: "36px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ fontFamily: "var(--font-display), serif", fontSize: "19px", fontWeight: 400, letterSpacing: "5px", color: "#fff", lineHeight: 1.1 }}>EXQUISITE</div>
-          <div style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "8.5px", letterSpacing: "6px", color: "#C9A84C", textTransform: "uppercase", marginTop: "2px" }}>Custom Glass</div>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <DiamondLogo size={36} />
+        <div style={{
+          borderLeft: "1px solid rgba(201,168,76,0.2)", paddingLeft: "8px", height: "32px",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+        }}>
+          <div style={{ fontFamily: "var(--font-display), serif", fontSize: "15px", fontWeight: 400, letterSpacing: "3px", color: "#fff", lineHeight: 1.1 }}>EXQUISITE</div>
+          <div style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "7.5px", letterSpacing: "4px", color: "#C9A84C", textTransform: "uppercase", marginTop: "2px" }}>Custom Glass</div>
         </div>
       </div>
-      <div style={{ display: "flex", gap: "28px", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "18px", alignItems: "center", flexShrink: 0 }}>
         {links.map(l => (
           <a key={l} href={`#${l.toLowerCase()}`} style={{
             fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2.5px",
@@ -227,9 +317,9 @@ function Nav({ scrolled }: { scrolled: boolean }) {
           color: "rgba(255,255,255,0.5)", textDecoration: "none",
         }}>(978) 815-8354</a>
         <a href="#contact" style={{
-          fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2.5px",
+          fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px",
           textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
-          padding: "10px 22px", textDecoration: "none", transition: "all 0.3s",
+          padding: "10px 16px", textDecoration: "none", transition: "all 0.3s", flexShrink: 0,
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLAnchorElement).style.background = "#d4b85e";
@@ -252,10 +342,41 @@ function Hero() {
       flexDirection: "column", justifyContent: "flex-end",
       padding: "0 40px 80px", overflow: "hidden", background: "#0A1628",
     }}>
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 80% 70% at 60% 40%, rgba(20,35,55,0.8), rgba(10,22,40,1))",
-      }} />
+      <div
+        aria-hidden
+        style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }}
+      >
+        <Image
+          src={HERO_IMAGE_SRC}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={92}
+          style={{
+            objectFit: "cover",
+            objectPosition: "center 45%",
+            filter: "brightness(0.76) contrast(1.12) saturate(0.88)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: `
+              linear-gradient(
+                to bottom,
+                rgba(10, 22, 40, 0.88) 0%,
+                rgba(10, 22, 40, 0.82) 28%,
+                rgba(10, 22, 40, 0.86) 52%,
+                rgba(10, 22, 40, 0.95) 74%,
+                #0a1628 100%
+              ),
+              radial-gradient(ellipse 95% 75% at 58% 30%, rgba(10, 22, 40, 0.72), transparent 55%)
+            `,
+          }}
+        />
+      </div>
       {/* Decorative glass panels */}
       <GlassPanel style={{
         position: "absolute", top: "14%", right: "7%", width: "280px", height: "400px",
@@ -272,7 +393,10 @@ function Hero() {
         background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.2) 50%, transparent)",
         opacity: loaded ? 1 : 0, transition: "opacity 2s ease 1.2s",
       }} />
-      <div style={{ position: "relative", zIndex: 2, maxWidth: "820px" }}>
+      <div style={{
+        position: "relative", zIndex: 2, maxWidth: "820px",
+        marginBottom: "clamp(96px, 12vh, 132px)",
+      }}>
         <div style={{
           fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "5px",
           textTransform: "uppercase", color: "#C9A84C", marginBottom: "24px",
@@ -394,6 +518,142 @@ function CraftInterlude() {
 function Portfolio() {
   const [active, setActive] = useState(0);
   const projects: PortfolioEntry[] = [
+    {
+      title: "Custom shower enclosure",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-custom-shower-premium.jpg",
+      shortLabel: "Shower Enclosure",
+      desc: "Frameless shower glass tailored to the bathroom layout—clear tempered panels, minimal hardware, and clean sight lines from curb to ceiling for a bright, open bath.",
+      tags: ["Frameless Glass", "Tempered Panels", "Residential Bath"],
+    },
+    {
+      title: "Install in progress",
+      loc: "Commercial, MA",
+      type: "partition",
+      imageSrc: "/gallery/ecg-commercial-glass-installation.jpg",
+      shortLabel: "Installation",
+      desc: "On-site installation of a multi-panel glass enclosure—layout, setting, and protection of tempered glass before final hardware and seal completion.",
+      tags: ["Site Install", "Multi Panel", "Tempered Glass"],
+    },
+    {
+      title: "High-rise balcony",
+      loc: "Boston, MA",
+      type: "balcony",
+      imageSrc: "/gallery/ecg-railing-boston-balcony.jpg",
+      shortLabel: "High Rise",
+      desc: "Exterior balcony railing with clear tempered glass and metal posts, engineered for height and exposure while preserving an open view over the city and park.",
+      tags: ["Balcony System", "Structural Glass", "City Views"],
+    },
+    {
+      title: "Residential balcony at dusk",
+      loc: "Residential, NH",
+      type: "railing2",
+      imageSrc: "/gallery/ecg-railing-residential-dusk.jpg",
+      shortLabel: "Balcony Dusk",
+      desc: "Corner glass guardrail on a contemporary home at twilight—clean posts, continuous handrail, and panels aligned for sightlines and code-compliant loads.",
+      tags: ["Exterior Railing", "Corner Detail", "Post & Rail"],
+    },
+    {
+      title: "House + glass railing",
+      loc: "Residential, MA",
+      type: "railing1",
+      imageSrc: "/gallery/ecg-railing-residential-exterior.jpg",
+      shortLabel: "House Railing",
+      desc: "Second-story perimeter glass railing with black posts, paired with large sliding doors and windows for a cohesive indoor–outdoor glass package.",
+      tags: ["Multi Story", "Black Posts", "Ultra Clear"],
+    },
+    {
+      title: "Frameless shower",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/ecg-shower-frameless-vaulted.jpg",
+      shortLabel: "Frameless Shower",
+      desc: "Custom frameless enclosure following a vaulted ceiling and marble surround—precision cuts, minimal hardware, and clear glass for an open, spa-like bath.",
+      tags: ["Frameless", "Vaulted Ceiling", "Marble Bath"],
+    },
+    {
+      title: "Custom glass mirror",
+      loc: "Residential, MA",
+      type: "mirror",
+      imageSrc: "/gallery/portfolio-mirror.jpg",
+      imageBrightness: 0.78,
+      shortLabel: "Bath Mirror",
+      desc: "Large-format vanity mirror measured and installed for a seamless wall of reflection—polished edges, flush mounting, and careful alignment with lighting and tile for a refined bath.",
+      tags: ["Custom Cut", "Polished Edge", "Vanity Wall"],
+    },
+    {
+      title: "Frameless shower glass",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-shower-frameless-stock.jpg",
+      shortLabel: "Frameless Bath",
+      desc: "Clear tempered glass enclosure with minimal hardware and a clean curb line—built for everyday use while keeping the bath bright and visually open.",
+      tags: ["Frameless", "Tempered Glass", "Minimal Hardware"],
+    },
+    {
+      title: "Walk-in glass shower",
+      loc: "Residential, NH",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-shower-walkin.jpg",
+      shortLabel: "Walk-In",
+      desc: "Open walk-in layout with a fixed panel and swing door, aligned to tile and plumbing so every seal lands square and water stays where it belongs.",
+      tags: ["Walk-In", "Fixed Panel", "Precision Fit"],
+    },
+    {
+      title: "Marble & glass shower",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-shower-marble-istock.jpg",
+      shortLabel: "Marble Shower",
+      desc: "Contemporary enclosure paired with marble-look tile—glass cut to follow grout lines and corners so the stall reads as one intentional design.",
+      tags: ["Marble Tile", "Contemporary", "Custom Cut"],
+    },
+    {
+      title: "Modern shower doors",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-shower-doors.jpg",
+      shortLabel: "Shower Doors",
+      desc: "Sleek door hardware and polished glass edges for a refined closure—smooth swing, quiet contact, and hardware finished to match the rest of the bath.",
+      tags: ["Door Hardware", "Polished Edge", "Residential"],
+    },
+    {
+      title: "On-site glass installation",
+      loc: "Commercial, MA",
+      type: "partition",
+      imageSrc: "/gallery/portfolio-install-onsite.jpg",
+      shortLabel: "Site Install",
+      desc: "Crew setting large-format glass in place—suction cups, shims, and level checks before final anchoring so every panel lands plumb and true to the opening.",
+      tags: ["Field Fit", "Tempered Panels", "Commercial"],
+    },
+    {
+      title: "Precision glass fitting",
+      loc: "Residential, MA",
+      type: "partition",
+      imageSrc: "/gallery/portfolio-install-fitting.jpg",
+      shortLabel: "Fitting",
+      desc: "Hands-on alignment of glass to frame and hardware—measuring twice, easing the panel into position, and verifying gaps before the final tighten-down.",
+      tags: ["Hand Fit", "Alignment", "Residential"],
+    },
+    {
+      title: "Glass panel placement",
+      loc: "Commercial, NH",
+      type: "partition",
+      imageSrc: "/gallery/portfolio-install-placement.jpg",
+      shortLabel: "Placement",
+      desc: "Coordinated lift and set of heavy glass—teamwork, edge protection, and controlled movement from dolly to opening for a safe, scratch-free install.",
+      tags: ["Team Lift", "Edge Safe", "Multi Panel"],
+    },
+    {
+      title: "Shower enclosure install",
+      loc: "Residential, MA",
+      type: "shower",
+      imageSrc: "/gallery/portfolio-shower-install-istock.jpg",
+      shortLabel: "Shower Install",
+      desc: "Field installation of a glass shower cabin—panels, door, and hardware aligned to the curb and tile, with seals and adjustments checked for smooth operation and a watertight closure.",
+      tags: ["Bathroom Fit", "Glass Cabin", "Seal & Hardware"],
+    },
     { title: "Custom Shower Enclosure", loc: "Residential, MA", type: "shower",
       desc: "Frameless glass shower enclosure custom fitted to a vaulted ceiling with skylight. 3/8\" ultra-clear tempered glass with polished chrome hardware, precision cut to match the roofline angle.",
       tags: ["Frameless Design", "Vaulted Ceiling Fit", "Chrome Hardware"] },
@@ -429,8 +689,14 @@ function Portfolio() {
       </Fade>
       <Fade delay={0.1}>
         <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "0", border: "1px solid rgba(201,168,76,0.1)", minHeight: "480px" }}>
-          <PhotoBox type={p.type} style={{ minHeight: "480px" }}>
-            <div style={{ position: "absolute", bottom: "24px", left: "24px", fontFamily: "var(--font-display), serif", fontSize: "80px", fontWeight: 400, color: "rgba(201,168,76,0.06)", lineHeight: 1 }}>
+          <PhotoBox
+            type={p.type}
+            imageSrc={p.imageSrc}
+            shortLabel={p.shortLabel}
+            imageBrightness={p.imageBrightness}
+            style={{ minHeight: "480px" }}
+          >
+            <div style={{ position: "absolute", bottom: "24px", left: "24px", zIndex: 3, fontFamily: "var(--font-display), serif", fontSize: "80px", fontWeight: 400, color: "rgba(201,168,76,0.06)", lineHeight: 1 }}>
               {String(active + 1).padStart(2, "0")}
             </div>
           </PhotoBox>
@@ -461,11 +727,19 @@ function Portfolio() {
         {/* Thumbnail strip */}
         <div style={{ display: "flex", gap: "6px", marginTop: "6px" }}>
           {projects.map((proj, i) => (
-            <PhotoBox key={i} type={proj.type} style={{
-              flex: 1, height: "64px", cursor: "pointer",
-              opacity: i === active ? 1 : 0.35, transition: "opacity 0.4s",
-              border: i === active ? "1px solid rgba(201,168,76,0.4)" : "1px solid transparent",
-            }} onClick={() => setActive(i)} />
+            <PhotoBox
+              key={i}
+              type={proj.type}
+              imageSrc={proj.imageSrc}
+              shortLabel={proj.shortLabel}
+              imageBrightness={proj.imageBrightness}
+              style={{
+                flex: 1, height: "64px", cursor: "pointer",
+                opacity: i === active ? 1 : 0.35, transition: "opacity 0.4s",
+                border: i === active ? "1px solid rgba(201,168,76,0.4)" : "1px solid transparent",
+              }}
+              onClick={() => setActive(i)}
+            />
           ))}
         </div>
       </Fade>
@@ -482,7 +756,24 @@ function Services() {
     { n: "04", title: "Glass Walls & Partitions", desc: "Interior glass walls and room dividers for residential and commercial spaces. Frameless or channel-mounted systems that preserve light flow while defining separate areas.", feats: ["Floor to Ceiling", "Frosted & Textured", "Office & Residential"] },
   ];
   return (
-    <section id="services" style={{ background: "#0A1628", padding: "120px 40px" }}>
+    <section id="services" style={{ background: "#0A1628", padding: "120px 40px", position: "relative", overflow: "hidden" }}>
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          right: "max(-6%, -40px)",
+          top: "52%",
+          transform: "translateY(-50%)",
+          width: "min(400px, 72vw)",
+          aspectRatio: "1",
+          opacity: 0.92,
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
+        <DiamondLogoSilhouette />
+      </div>
+      <div style={{ position: "relative", zIndex: 1 }}>
       <PLine style={{ marginBottom: "70px" }} />
       <Fade>
         <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>What We Do</span>
@@ -515,6 +806,7 @@ function Services() {
           </div>
         </Fade>
       ))}
+      </div>
     </section>
   );
 }
@@ -530,11 +822,20 @@ function WhyECG() {
     <section style={{ background: "#0c1a30", padding: "100px 40px" }}>
       <PLine style={{ marginBottom: "60px" }} />
       <Fade>
-        <div style={{ textAlign: "center", marginBottom: "60px" }}>
+        <div style={{ textAlign: "center", marginBottom: "56px" }}>
           <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>Why Exquisite</span>
           <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(28px, 3vw, 42px)", fontWeight: 400, color: "#fff", margin: 0 }}>
             Built on <span style={{ fontStyle: "italic" }}>Trust & Precision</span>
           </h2>
+          <div
+            aria-hidden
+            style={{
+              height: "1px",
+              maxWidth: "320px",
+              margin: "28px auto 0",
+              background: "linear-gradient(90deg, transparent, rgba(201,168,76,0.35) 20%, rgba(201,168,76,0.45) 50%, rgba(201,168,76,0.35) 80%, transparent)",
+            }}
+          />
         </div>
       </Fade>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "rgba(201,168,76,0.06)" }}>
@@ -566,16 +867,51 @@ function Process() {
         <Fade>
           <div style={{ position: "sticky", top: "130px" }}>
             <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C", display: "block", marginBottom: "10px" }}>How We Work</span>
-            <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 400, color: "#fff", margin: "0 0 20px" }}>
-              Measured Twice.<br/><span style={{ fontStyle: "italic" }}>Cut Once.</span>
+            <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 400, color: "#fff", margin: "0 0 20px", lineHeight: 1.15 }}>
+              Measured{" "}
+              <span style={{ display: "inline-block", verticalAlign: "baseline" }}>
+                <span style={{ display: "block" }}>Twice.</span>
+                <span
+                  aria-hidden
+                  style={{
+                    display: "block",
+                    marginTop: "6px",
+                    borderTop: "1px solid rgba(201,168,76,0.3)",
+                    height: "3px",
+                    borderBottom: "1px solid rgba(201,168,76,0.3)",
+                  }}
+                />
+              </span>
+              <br />
+              <span style={{ fontStyle: "italic" }}>
+                Cut{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    borderBottom: "1px solid rgba(201,168,76,0.3)",
+                    paddingBottom: "3px",
+                  }}
+                >
+                  Once
+                </span>
+                .
+              </span>
             </h2>
             <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", lineHeight: 1.85, color: "rgba(255,255,255,0.35)", maxWidth: "340px" }}>
               Glass doesn&apos;t forgive mistakes. That&apos;s why every project follows the same disciplined four-step process, whether it&apos;s a single shower panel or a 200-foot commercial installation.
             </p>
-            <div style={{ marginTop: "40px", position: "relative", height: "180px" }}>
-              <GlassPanel style={{ position: "absolute", left: 0, top: 0, width: "100px", height: "160px" }} />
-              <GlassPanel style={{ position: "absolute", left: "70px", top: "20px", width: "80px", height: "120px" }} />
-              <GlassPanel style={{ position: "absolute", left: "120px", top: "40px", width: "60px", height: "100px" }} />
+            <div style={{
+              marginTop: "40px",
+              position: "relative",
+              width: "100%",
+              maxWidth: "360px",
+              height: "min(300px, 42vw)",
+              minHeight: "260px",
+            }}
+            >
+              <GlassPanel style={{ position: "absolute", left: 0, top: 0, width: "140px", height: "220px" }} />
+              <GlassPanel style={{ position: "absolute", left: "clamp(88px, 24%, 112px)", top: "72px", width: "108px", height: "168px" }} />
+              <GlassPanel style={{ position: "absolute", left: "clamp(168px, 48%, 220px)", top: "148px", width: "82px", height: "138px" }} />
             </div>
           </div>
         </Fade>
@@ -668,10 +1004,25 @@ function About() {
         </Fade>
         <Fade delay={0.15}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", height: "380px" }}>
-            <PhotoBox type="railing1" style={{ borderRadius: "2px" }} />
-            <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "8px" }}>
-              <PhotoBox type="partition" style={{ borderRadius: "2px" }} />
-              <PhotoBox type="shower" style={{ borderRadius: "2px" }} />
+            <PhotoBox
+              type="railing1"
+              imageSrc="/gallery/about-glazier-istock.jpg"
+              shortLabel=""
+              style={{ borderRadius: "2px", height: "100%", minHeight: "100%" }}
+            />
+            <div style={{ display: "grid", gridTemplateRows: "1fr 1fr", gap: "8px", minHeight: 0 }}>
+              <PhotoBox
+                type="partition"
+                imageSrc="/gallery/about-shower-handle-install-istock.jpg"
+                shortLabel=""
+                style={{ borderRadius: "2px", height: "100%", minHeight: "0" }}
+              />
+              <PhotoBox
+                type="shower"
+                imageSrc="/gallery/about-auto-glazier-istock.jpg"
+                shortLabel=""
+                style={{ borderRadius: "2px", height: "100%", minHeight: "0" }}
+              />
             </div>
           </div>
         </Fade>

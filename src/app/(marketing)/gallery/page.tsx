@@ -4,7 +4,7 @@ import { GalleryClient } from "./GalleryClient";
 export const metadata: Metadata = {
   title: "Gallery | Exquisite Custom Glass Showers",
   description:
-    "Project gallery: custom shower glass, railings, and mirrors across Massachusetts and New Hampshire.",
+    "Project gallery: custom showers, glass railings, and commercial glass installations across Massachusetts and New Hampshire.",
 };
 
 export default function GalleryPage() {
@@ -19,8 +19,8 @@ export default function GalleryPage() {
             Our Work Speaks for Itself
           </h1>
           <p className="font-body mt-5 max-w-2xl text-lg leading-relaxed text-charcoal/85">
-            A selection of residential glasswork—showers, railings, and mirrors—representative
-            of the fit, clarity, and finish we deliver throughout MA and NH.
+            Real installations: frameless showers, glass railings, commercial partitions, and
+            architectural glass across Massachusetts and New Hampshire.
           </p>
         </div>
       </section>

@@ -4,87 +4,52 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { X } from "lucide-react";
 
-type Category = "all" | "showers" | "railings" | "mirrors";
+type Category = "all" | "commercial" | "showers" | "railings";
 
 const filters: { id: Category; label: string }[] = [
   { id: "all", label: "All" },
+  { id: "commercial", label: "Commercial" },
   { id: "showers", label: "Showers" },
   { id: "railings", label: "Railings" },
-  { id: "mirrors", label: "Mirrors" },
 ];
 
+/** Client project photos — exported ~max 1024px JPEG (~100–200KB each) in /public/gallery */
 const items = [
   {
-    id: "a1",
-    category: "showers" as const,
-    src: "https://images.unsplash.com/photo-1763485956293-873ea83bf095?auto=format&fit=crop&w=1200&q=85",
-    alt: "Frameless glass shower enclosure",
+    id: "ecg-9109",
+    category: "commercial" as const,
+    src: "/gallery/ecg-commercial-glass-office.jpg",
+    alt: "Commercial glass partition wall and doors with black framing",
   },
   {
-    id: "a2",
-    category: "showers" as const,
-    src: "https://images.unsplash.com/photo-1721743138130-e8ce6e1a7dce?auto=format&fit=crop&w=1200&q=85",
-    alt: "Modern bathroom with glass shower partition",
+    id: "ecg-9110",
+    category: "commercial" as const,
+    src: "/gallery/ecg-commercial-glass-installation.jpg",
+    alt: "Glass partition installation with brick interior and drop ceiling",
   },
   {
-    id: "a3",
-    category: "showers" as const,
-    src: "https://images.unsplash.com/photo-1722650272509-4e86176d6a6e?auto=format&fit=crop&w=1200&q=85",
-    alt: "Walk-in shower with clear glass",
-  },
-  {
-    id: "b1",
+    id: "ecg-9108",
     category: "railings" as const,
-    src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=85",
-    alt: "Interior staircase with glass railing",
+    src: "/gallery/ecg-railing-boston-balcony.jpg",
+    alt: "Exterior glass balcony railing overlooking Boston and the Common",
   },
   {
-    id: "b2",
+    id: "ecg-9105",
     category: "railings" as const,
-    src: "https://images.unsplash.com/photo-1600607687644-c7171b42498f?auto=format&fit=crop&w=1200&q=85",
-    alt: "Open living space with glass guardrail",
+    src: "/gallery/ecg-railing-residential-dusk.jpg",
+    alt: "Residential glass railing on a modern balcony at dusk",
   },
   {
-    id: "b3",
+    id: "ecg-9104",
     category: "railings" as const,
-    src: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?auto=format&fit=crop&w=1200&q=85",
-    alt: "Contemporary stair with glass panels",
+    src: "/gallery/ecg-railing-residential-exterior.jpg",
+    alt: "Two-story home with glass balcony railing and large glass doors",
   },
   {
-    id: "c1",
-    category: "mirrors" as const,
-    src: "https://images.unsplash.com/photo-1629938828025-41bbeeb843fa?auto=format&fit=crop&w=1200&q=85",
-    alt: "Bathroom vanity with large mirror",
-  },
-  {
-    id: "c2",
-    category: "mirrors" as const,
-    src: "https://images.unsplash.com/photo-1712214741533-3dd5b8013ca7?auto=format&fit=crop&w=1200&q=85",
-    alt: "Minimal bath with wall mirror",
-  },
-  {
-    id: "c3",
-    category: "mirrors" as const,
-    src: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=85",
-    alt: "Round mirror above washstand",
-  },
-  {
-    id: "a4",
+    id: "ecg-9097",
     category: "showers" as const,
-    src: "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=85",
-    alt: "Spa-like shower with glass door",
-  },
-  {
-    id: "b4",
-    category: "railings" as const,
-    src: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
-    alt: "Residential interior with glass railing detail",
-  },
-  {
-    id: "c4",
-    category: "mirrors" as const,
-    src: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=85",
-    alt: "Interior with decorative mirror detail",
+    src: "/gallery/ecg-shower-frameless-vaulted.jpg",
+    alt: "Custom frameless shower enclosure with vaulted ceiling and marble tile",
   },
 ] as const;
 
@@ -139,11 +104,11 @@ export function GalleryClient() {
       </nav>
 
       <ul
-        className="mt-10 grid list-none grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-4"
+        className="mt-10 grid list-none grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-3"
         aria-label="Project photos"
       >
         {visible.map((item) => (
-          <li key={item.id} className="relative aspect-square overflow-hidden">
+          <li key={item.id} className="relative aspect-[3/4] overflow-hidden">
             <button
               type="button"
               onClick={() => setLightbox(item.id)}
@@ -154,7 +119,8 @@ export function GalleryClient() {
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 33vw"
+                quality={85}
                 className="object-cover transition-transform duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover:scale-[1.02]"
               />
             </button>
@@ -182,19 +148,19 @@ export function GalleryClient() {
             <X className="h-8 w-8" strokeWidth={1.25} />
           </button>
           <div
-            className="relative max-h-[85vh] w-full max-w-5xl"
+            className="relative flex max-h-[90vh] w-full max-w-3xl flex-col items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-[4/3] w-full md:aspect-video">
-              <Image
-                src={activeItem.src}
-                alt={activeItem.alt}
-                fill
-                className="object-contain"
-                sizes="100vw"
-                priority
-              />
-            </div>
+            <Image
+              src={activeItem.src}
+              alt={activeItem.alt}
+              width={800}
+              height={1024}
+              quality={90}
+              priority
+              className="max-h-[min(85vh,920px)] w-auto max-w-full object-contain"
+              sizes="(max-width: 768px) 100vw, 768px"
+            />
             <p className="font-body mt-4 text-center text-sm text-white-warm/85">
               {activeItem.alt}
             </p>
