@@ -12,24 +12,59 @@ const projectTypes = [
 ] as const;
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formStartedAt] = useState(() => Date.now());
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setError(null);
     const form = e.currentTarget;
-    const data = {
-      name: (form.elements.namedItem("name") as HTMLInputElement).value,
-      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
-      email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      projectType: (form.elements.namedItem("projectType") as HTMLSelectElement)
-        .value,
-      message: (form.elements.namedItem("message") as HTMLTextAreaElement)
-        .value,
-    };
-    console.log("[Contact form]", data);
-    setSubmitted(true);
-    form.reset();
-    setTimeout(() => setSubmitted(false), 4000);
+    setSubmitting(true);
+    try {
+      const payload = {
+        name: (form.elements.namedItem("name") as HTMLInputElement).value,
+        phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+        email: (form.elements.namedItem("email") as HTMLInputElement).value,
+        projectType: (form.elements.namedItem("projectType") as HTMLSelectElement).value,
+        message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+        sourcePage: window.location.pathname,
+        formStartedAt,
+        website: (form.elements.namedItem("website") as HTMLInputElement).value,
+      };
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error("Request failed");
+      }
+
+      // Fire conversion events when analytics is present.
+      if (typeof window !== "undefined") {
+        const win = window as Window & {
+          gtag?: (...args: unknown[]) => void;
+          dataLayer?: unknown[];
+        };
+        win.gtag?.("event", "generate_lead", {
+          form_name: "contact_form_marketing",
+          page_path: window.location.pathname,
+        });
+        win.dataLayer?.push?.({
+          event: "lead_submit",
+          form_name: "contact_form_marketing",
+          page_path: window.location.pathname,
+        });
+        window.location.assign("/thank-you");
+      }
+    } catch {
+      setError("Something went wrong. Please call us at (978) 815-8354.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const inputClass =
@@ -45,6 +80,14 @@ export function ContactForm() {
       noValidate
       aria-label="Request project information"
     >
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden
+      />
       <div>
         <label htmlFor="name" className="font-body text-xs font-medium uppercase tracking-widest text-charcoal/70">
           Name
@@ -122,13 +165,14 @@ export function ContactForm() {
       </div>
       <button
         type="submit"
+        disabled={submitting}
         className="mt-2 inline-flex w-full justify-center bg-navy-deep py-3.5 font-body text-sm font-medium uppercase tracking-widest text-gold transition-colors hover:bg-navy-mid sm:w-auto sm:px-12"
       >
-        Send message
+        {submitting ? "Sending..." : "Send message"}
       </button>
-      {submitted && (
-        <p className="font-body text-sm text-gold" role="status">
-          Thanks—your note was logged (demo: check the browser console).
+      {error && (
+        <p className="font-body text-sm text-red-700" role="alert">
+          {error}
         </p>
       )}
     </form>

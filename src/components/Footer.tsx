@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BUSINESS } from "@/lib/business";
 import { brandLogo } from "@/lib/branding";
 
 const linkClass =
@@ -16,15 +17,16 @@ const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-const PHONE_DISPLAY = "(978) 815-8354";
-const PHONE_HREF = "tel:+19788158354";
-const EMAIL = "hello@exquisitecustomglass.com";
-const ADDRESS_LINE = "142 Fabrication Way, Suite 200";
-const CITY_LINE = "Lowell, MA 01852";
+const PHONE_DISPLAY = BUSINESS.phoneDisplay;
+const PHONE_HREF = `tel:${BUSINESS.phoneE164}`;
+const EMAIL = BUSINESS.email;
+const ADDRESS_LINE = BUSINESS.address.streetAddress;
+const CITY_LINE = `${BUSINESS.address.addressLocality}, ${BUSINESS.address.addressRegion} ${BUSINESS.address.postalCode}`;
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -97,6 +99,14 @@ export function Footer() {
                 className={linkClass}
               >
                 {EMAIL}
+              </a>
+              <a
+                href="https://www.instagram.com/exquisite__customglass_showers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                Instagram
               </a>
               <p className="font-body text-sm text-white-warm">
                 <span className="font-medium">Service area:</span>{" "}

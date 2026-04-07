@@ -24,6 +24,13 @@ export default function AboutPage() {
             architects, and builders who want field-verified work and installers who treat a
             jobsite like their own.
           </p>
+          <p className="font-body mt-4 max-w-2xl text-base leading-relaxed text-charcoal/75">
+            If you are comparing local installers, our{" "}
+            <Link href="/#services" className="underline underline-offset-4 hover:text-gold">
+              custom frameless shower door services
+            </Link>{" "}
+            section shows exactly how we approach measurement, fabrication, and installation.
+          </p>
         </div>
       </section>
 

@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BUSINESS } from "@/lib/business";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact | Exquisite Custom Glass Showers",
+  title: "Contact Frameless Shower Door Installers | Haverhill MA",
   description:
-    "Request a free estimate for custom glass in Massachusetts and New Hampshire—shower doors, railings, mirrors, and commercial glazing.",
+    "Contact custom shower glass installers near Haverhill, MA for frameless shower door installation and replacement across North Shore MA and southern NH.",
 };
 
-const PHONE_DISPLAY = "(978) 815-8354";
-const PHONE_HREF = "tel:+19788158354";
-const EMAIL = "hello@exquisitecustomglass.com";
-const ADDRESS_LINE = "690 S. Main St.";
-const CITY_LINE = "Haverhill, MA 01830";
+const PHONE_DISPLAY = BUSINESS.phoneDisplay;
+const PHONE_HREF = `tel:${BUSINESS.phoneE164}`;
+const EMAIL = BUSINESS.email;
+const ADDRESS_LINE = BUSINESS.address.streetAddress;
+const CITY_LINE = `${BUSINESS.address.addressLocality}, ${BUSINESS.address.addressRegion} ${BUSINESS.address.postalCode}`;
 
 export default function ContactPage() {
   return (
@@ -29,6 +30,13 @@ export default function ContactPage() {
             Tell us about your project and timing. We&apos;ll reply with honest
             next steps—whether that&apos;s a site visit, a ballpark range, or a
             referral if we&apos;re not the right fit.
+          </p>
+          <p className="font-body mt-4 max-w-2xl text-base leading-relaxed text-charcoal/75">
+            Looking for pricing guidance first? Review our{" "}
+            <Link href="/#faq" className="underline underline-offset-4 hover:text-gold">
+              shower door cost FAQs
+            </Link>{" "}
+            before you submit the form.
           </p>
         </div>
       </section>

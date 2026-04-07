@@ -1,4 +1,5 @@
 import { getSiteUrl } from "@/lib/site";
+import { BUSINESS } from "@/lib/business";
 
 /** LocalBusiness + WebSite structured data for Google and other crawlers */
 export function SeoJsonLd() {
@@ -9,30 +10,52 @@ export function SeoJsonLd() {
       {
         "@type": "LocalBusiness",
         "@id": `${base}/#business`,
-        name: "Exquisite Custom Glass",
+        name: BUSINESS.name,
         description:
-          "Custom frameless shower enclosures, glass railings, architectural mirrors, and bespoke glass fabrication and installation in Massachusetts and New Hampshire.",
+          "Custom glass shower doors, frameless shower door installation, glass railings, and architectural mirrors in a 36-mile service area from Haverhill, MA.",
         url: base,
-        telephone: "+19788158354",
-        email: "hello@exquisitecustomglass.com",
+        telephone: BUSINESS.phoneE164,
+        email: BUSINESS.email,
         image: `${base}/brand/ecg-logo-horizontal.svg`,
         address: {
           "@type": "PostalAddress",
-          addressLocality: "Haverhill",
-          addressRegion: "MA",
-          addressCountry: "US",
+          streetAddress: BUSINESS.address.streetAddress,
+          addressLocality: BUSINESS.address.addressLocality,
+          addressRegion: BUSINESS.address.addressRegion,
+          postalCode: BUSINESS.address.postalCode,
+          addressCountry: BUSINESS.address.addressCountry,
         },
-        areaServed: [
-          { "@type": "State", name: "Massachusetts" },
-          { "@type": "State", name: "New Hampshire" },
-        ],
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: BUSINESS.geo.latitude,
+          longitude: BUSINESS.geo.longitude,
+        },
+        areaServed: BUSINESS.serviceAreas.map((area) => ({
+          "@type": "City",
+          name: area,
+        })),
+        serviceArea: {
+          "@type": "GeoCircle",
+          geoMidpoint: {
+            "@type": "GeoCoordinates",
+            latitude: BUSINESS.geo.latitude,
+            longitude: BUSINESS.geo.longitude,
+          },
+          geoRadius: BUSINESS.serviceRadiusMeters,
+        },
+        openingHoursSpecification: BUSINESS.openingHours.map((hours) => ({
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: hours.daysOfWeek,
+          opens: hours.opens,
+          closes: hours.closes,
+        })),
         priceRange: "$$",
       },
       {
         "@type": "WebSite",
         "@id": `${base}/#website`,
         url: base,
-        name: "Exquisite Custom Glass",
+        name: BUSINESS.name,
         description:
           "Precision glass, handcrafted for your space — showers, railings, mirrors, and commercial glass in MA & NH.",
         publisher: { "@id": `${base}/#business` },

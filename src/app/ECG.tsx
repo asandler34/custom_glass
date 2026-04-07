@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type FormEvent,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -161,6 +162,7 @@ function placeholderLabel(type: PlaceholderKey): string {
 function PhotoBox({
   type,
   imageSrc,
+  imageSizes,
   shortLabel,
   imageBrightness,
   style = {},
@@ -170,6 +172,7 @@ function PhotoBox({
 }: {
   type: PlaceholderKey;
   imageSrc?: string;
+  imageSizes?: string;
   shortLabel?: string;
   imageBrightness?: number;
   style?: CSSProperties;
@@ -197,7 +200,7 @@ function PhotoBox({
             src={imageSrc}
             alt={photoAlt}
             fill
-            sizes="(max-width: 900px) 100vw, 55vw"
+            sizes={imageSizes ?? "(max-width: 900px) 100vw, 55vw"}
             quality={85}
             style={{
               objectFit: "cover",
@@ -540,7 +543,7 @@ function Hero() {
           textTransform: "uppercase", color: "#C9A84C", marginBottom: "24px",
           opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(15px)",
           transition: "all 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s",
-        }}>Custom Architectural Glass &middot; Massachusetts & New Hampshire</div>
+        }}>Custom Architectural Glass &middot; North Shore, MA &middot; Seacoast, NH &middot; Boston, MA</div>
         <h1 style={{
           fontFamily: "var(--font-display), serif",
           fontSize: "clamp(42px, 6.5vw, 88px)", fontWeight: 400,
@@ -551,14 +554,26 @@ function Hero() {
           Precision Glass,<br/>Handcrafted for<br/>
           <span style={{ fontStyle: "italic", color: "#C9A84C" }}>Your Space</span>
         </h1>
+        <p
+          style={{
+            fontFamily: "var(--font-body), sans-serif",
+            fontSize: "11px",
+            letterSpacing: "2px",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.52)",
+            margin: "0 0 22px",
+          }}
+        >
+          North Shore, MA | Seacoast, NH | Boston, MA
+        </p>
         <p style={{
           fontFamily: "var(--font-body), sans-serif", fontSize: "15px", lineHeight: 1.8,
           color: "rgba(255,255,255,0.45)", maxWidth: "440px", margin: "0 0 44px",
           opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(20px)",
           transition: "all 0.9s cubic-bezier(0.16,1,0.3,1) 1s",
         }}>
-          Custom frameless shower enclosures, glass railings, architectural mirrors, and bespoke glass installations.
-          Every piece is measured, fabricated, and installed by our team.
+          Custom frameless shower enclosures, glass railings, architectural mirrors, and bespoke
+          glass installations. Every piece is measured, fabricated, and installed by our team.
         </p>
         <div
           className="ecg-hero-cta"
@@ -650,7 +665,9 @@ function CraftInterlude() {
               fontFamily: "var(--font-body), sans-serif", fontSize: "13px", lineHeight: 1.9,
               color: "rgba(255,255,255,0.3)", margin: 0,
             }}>
-              Glass work demands perfection. A fraction of a millimeter off and it shows. That&apos;s why we measure with laser precision, cut with diamond tools, and temper every panel to exact specification. No shortcuts. No compromises.
+              Fine glass work leaves no room for “close enough.” We template with precision,
+              fabricate to exact dimensions, and inspect each panel before install so the final
+              result feels effortless in daily use.
             </p>
           </div>
         </div>
@@ -821,9 +838,9 @@ function Portfolio() {
       <Fade>
         <div className="ecg-portfolio-header">
           <div>
-            <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C" }}>Selected Projects</span>
+            <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "4px", textTransform: "uppercase", color: "#C9A84C" }}>Selected Installations</span>
             <h2 style={{ fontFamily: "var(--font-display), serif", fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 400, color: "#fff", margin: "10px 0 0" }}>
-              Our <span style={{ fontStyle: "italic" }}>Work</span>
+              Recent <span style={{ fontStyle: "italic" }}>Work</span>
             </h2>
           </div>
           <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px", color: "rgba(255,255,255,0.3)" }}>
@@ -836,6 +853,7 @@ function Portfolio() {
           <PhotoBox
             type={p.type}
             imageSrc={p.imageSrc}
+            imageSizes="(max-width: 900px) 100vw, 55vw"
             shortLabel={p.shortLabel}
             imageBrightness={p.imageBrightness}
             className="ecg-portfolio-photo"
@@ -870,12 +888,13 @@ function Portfolio() {
           </div>
         </div>
         {/* Thumbnail strip */}
-        <div style={{ display: "flex", gap: "6px", marginTop: "6px" }}>
+        <div className="ecg-portfolio-thumbs" style={{ display: "flex", gap: "6px", marginTop: "6px" }}>
           {projects.map((proj, i) => (
             <PhotoBox
               key={i}
               type={proj.type}
               imageSrc={proj.imageSrc}
+              imageSizes="(max-width: 900px) 20vw, 64px"
               shortLabel={proj.shortLabel}
               imageBrightness={proj.imageBrightness}
               style={{
@@ -1152,6 +1171,7 @@ function About() {
             <PhotoBox
               type="railing1"
               imageSrc="/gallery/about-glazier-istock.jpg"
+              imageSizes="(max-width: 900px) 100vw, 30vw"
               shortLabel=""
               style={{ borderRadius: "2px", height: "100%", minHeight: "100%" }}
             />
@@ -1159,12 +1179,14 @@ function About() {
               <PhotoBox
                 type="partition"
                 imageSrc="/gallery/about-shower-handle-install-istock.jpg"
+                imageSizes="(max-width: 900px) 50vw, 15vw"
                 shortLabel=""
                 style={{ borderRadius: "2px", height: "100%", minHeight: "0" }}
               />
               <PhotoBox
                 type="shower"
                 imageSrc="/gallery/about-auto-glazier-istock.jpg"
+                imageSizes="(max-width: 900px) 50vw, 15vw"
                 shortLabel=""
                 style={{ borderRadius: "2px", height: "100%", minHeight: "0" }}
               />
@@ -1180,16 +1202,23 @@ function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
   const faqs = [
     { q: "How long does a typical project take from start to finish?", a: "Most residential projects take 2 to 4 weeks from initial consultation to installation. The timeline includes your consultation, precision templating, fabrication, and a final install visit. Larger commercial projects may take longer depending on scope." },
+    { q: "Frameless vs framed shower doors: which is better?", a: "For many homes, frameless doors create cleaner sightlines and are easier to keep looking new. Framed units can be a good fit for tighter budgets or specific layouts. We review your opening and goals, then recommend the option that will perform best over time." },
+    { q: "How much do frameless shower doors cost in Massachusetts?", a: "Pricing usually comes down to glass thickness, hardware finish, panel layout, and installation complexity. Most projects land in a mid-to-premium range after field measurements. We provide clear estimates with options so you can compare value and scope." },
+    { q: "What affects shower glass installation cost?", a: "The biggest factors are opening size, wall conditions, hardware style, and any specialty cutouts. Glass type and travel distance from Haverhill can also influence the final quote. We walk through these details up front so there are no surprises." },
+    { q: "Custom vs prefab shower doors: what should I choose?", a: "Custom glass is made to your exact opening and usually offers better fit, sealing, and finish quality than prefab kits. Prefab can work well for simple layouts, but custom is often the better long-term choice for high-use bathrooms or uneven openings." },
+    { q: "What is the best shower glass thickness for frameless doors?", a: "Most frameless projects use 3/8-inch or 1/2-inch tempered glass. We recommend thickness based on panel size, hardware requirements, and the look you want." },
     { q: "What type of glass do you use?", a: "We use tempered safety glass on every project, which is required by building code for shower enclosures and railings. We offer standard clear, low-iron ultra-clear, frosted, tinted, and patterned options. Thickness ranges from 3/8\" for showers to 1/2\" for structural railings." },
     { q: "Do you offer frameless shower doors?", a: "Frameless is our specialty. We design and install fully frameless enclosures with minimal hardware for a clean, modern look. We also offer semi-frameless options for clients who prefer a different aesthetic or have budget considerations." },
-    { q: "What areas do you serve?", a: "We serve a 36-mile radius from our base in Haverhill, MA. This covers eastern Massachusetts and southern New Hampshire, including Boston, the North Shore, Merrimack Valley, Seacoast NH, Nashua, Manchester, and surrounding communities." },
+    { q: "What areas do you serve?", a: "We serve a 36-mile radius from our base in Haverhill, MA. This includes Andover, North Andover, Methuen, Lawrence, Salem NH, Plaistow NH, Boston, and surrounding North Shore and Seacoast communities." },
+    { q: "Do you handle shower glass replacement in Haverhill, MA?", a: "Yes. We handle replacement projects when an existing enclosure can be safely re-measured and upgraded. If hardware wear or layout issues make a full rebuild smarter, we will explain that clearly and outline your best options." },
+    { q: "How should I choose a custom shower glass installer near Haverhill, MA?", a: "Look for local references, in-house measuring and installation, clear warranty terms, and proven frameless experience. Our team handles measurement, fabrication, and install directly so quality stays consistent from start to finish." },
     { q: "Can you work with my contractor or designer?", a: "Absolutely. We regularly collaborate with architects, interior designers, and general contractors. We can join site meetings, review blueprints, and coordinate our work with other trades on your project timeline." },
     { q: "What hardware finishes are available?", a: "We carry polished chrome, brushed nickel, matte black, satin brass, oil-rubbed bronze, and polished brass. We source from premium manufacturers and can accommodate custom finish requests." },
     { q: "Is tempered glass safe?", a: "Yes. Tempered glass is up to five times stronger than standard glass, and if it does break, it shatters into small rounded pieces rather than sharp shards. It's required by code for all shower and railing applications." },
     { q: "Do you provide a warranty?", a: "Every installation comes with our lifetime craftsmanship warranty covering the seal, hardware mounting, and fit. Glass carries a manufacturer warranty against defects. We stand behind our work completely." },
   ];
   return (
-    <section className="ecg-s-pad" style={{ background: "#0c1a30" }}>
+    <section id="faq" className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
       <Fade>
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
@@ -1240,8 +1269,8 @@ function FAQ() {
 
 function ServiceArea() {
   const areas = ["Boston", "Cambridge", "North Shore", "Merrimack Valley", "Haverhill",
-    "Newburyport", "Andover", "Nashua NH", "Manchester NH", "Portsmouth NH",
-    "Hampton NH", "Seacoast NH", "Lowell", "Lawrence", "Salem", "Gloucester"];
+    "Newburyport", "Andover", "North Andover", "Methuen", "Lawrence",
+    "Nashua NH", "Manchester NH", "Portsmouth NH", "Salem NH", "Plaistow NH", "Seacoast NH"];
   return (
     <section className="ecg-s-pad-sm" style={{ background: "#0A1628" }}>
       <PLine style={{ marginBottom: "60px" }} />
@@ -1308,12 +1337,54 @@ function ServiceArea() {
 
 function Contact() {
   const [foc, setFoc] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formStartedAt] = useState(() => Date.now());
   const iStyle = (f: string): CSSProperties => ({
     fontFamily: "var(--font-body), sans-serif", fontSize: "13px", color: "#fff",
     background: "transparent", border: "none",
     borderBottom: `1px solid ${foc === f ? "rgba(201,168,76,0.5)" : "rgba(255,255,255,0.08)"}`,
     padding: "13px 0", outline: "none", width: "100%", transition: "border-color 0.3s", letterSpacing: "0.5px",
   });
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    const form = e.currentTarget;
+    try {
+      const payload = {
+        name: `${(form.elements.namedItem("firstName") as HTMLInputElement).value} ${(form.elements.namedItem("lastName") as HTMLInputElement).value}`.trim(),
+        email: (form.elements.namedItem("email") as HTMLInputElement).value,
+        phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+        projectType: (form.elements.namedItem("projectType") as HTMLSelectElement).value,
+        message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+        sourcePage: window.location.pathname,
+        formStartedAt,
+        website: (form.elements.namedItem("website") as HTMLInputElement).value,
+      };
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("submit failed");
+
+      const win = window as Window & { gtag?: (...args: unknown[]) => void; dataLayer?: unknown[] };
+      win.gtag?.("event", "generate_lead", { form_name: "contact_form_homepage", page_path: window.location.pathname });
+      win.dataLayer?.push?.({ event: "lead_submit", form_name: "contact_form_homepage", page_path: window.location.pathname });
+
+      setSubmitted(true);
+      form.reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch {
+      setError("Could not send right now. Please call (978) 815-8354.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
   return (
     <section id="contact" className="ecg-s-pad" style={{ background: "#0c1a30" }}>
       <PLine style={{ marginBottom: "70px" }} />
@@ -1342,24 +1413,29 @@ function Contact() {
           </div>
         </Fade>
         <Fade delay={0.12}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "28px", paddingTop: "16px" }}>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "28px", paddingTop: "16px" }}>
+            <input type="text" name="website" tabIndex={-1} autoComplete="off" style={{ display: "none" }} aria-hidden />
             <div className="ecg-contact-name-row">
-              {["First Name", "Last Name"].map(label => (
-                <div key={label}>
-                  <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>{label}</label>
-                  <input style={iStyle(label)} onFocus={() => setFoc(label)} onBlur={() => setFoc(null)} />
-                </div>
-              ))}
-            </div>
-            {["Email", "Phone"].map(label => (
-              <div key={label}>
-                <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>{label}</label>
-                <input style={iStyle(label)} onFocus={() => setFoc(label)} onBlur={() => setFoc(null)} />
+              <div>
+                <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>First Name</label>
+                <input name="firstName" required style={iStyle("firstName")} onFocus={() => setFoc("firstName")} onBlur={() => setFoc(null)} />
               </div>
-            ))}
+              <div>
+                <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Last Name</label>
+                <input name="lastName" required style={iStyle("lastName")} onFocus={() => setFoc("lastName")} onBlur={() => setFoc(null)} />
+              </div>
+            </div>
+            <div>
+              <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Email</label>
+              <input name="email" type="email" required style={iStyle("email")} onFocus={() => setFoc("email")} onBlur={() => setFoc(null)} />
+            </div>
+            <div>
+              <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Phone</label>
+              <input name="phone" type="tel" style={iStyle("phone")} onFocus={() => setFoc("phone")} onBlur={() => setFoc(null)} />
+            </div>
             <div>
               <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Project Type</label>
-              <select style={{ ...iStyle("type"), appearance: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)" }}
+              <select name="projectType" required style={{ ...iStyle("type"), appearance: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)" }}
                 onFocus={() => setFoc("type")} onBlur={() => setFoc(null)}>
                 <option value="">Select a service</option>
                 <option value="shower">Shower Enclosure</option>
@@ -1372,9 +1448,9 @@ function Contact() {
             </div>
             <div>
               <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Tell Us About Your Project</label>
-              <textarea rows={4} style={{ ...iStyle("msg"), resize: "vertical" }} onFocus={() => setFoc("msg")} onBlur={() => setFoc(null)} />
+              <textarea name="message" required rows={4} style={{ ...iStyle("msg"), resize: "vertical" }} onFocus={() => setFoc("msg")} onBlur={() => setFoc(null)} />
             </div>
-            <button style={{
+            <button type="submit" disabled={submitting} style={{
               fontFamily: "var(--font-body), sans-serif", fontSize: "11px", letterSpacing: "3px",
               textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
               padding: "16px 40px", border: "none", cursor: "pointer", alignSelf: "flex-start",
@@ -1390,8 +1466,10 @@ function Contact() {
               t.style.background = "#C9A84C";
               t.style.transform = "none";
             }}
-            >Request Free Estimate</button>
-          </div>
+            >{submitting ? "Sending..." : "Request Free Estimate"}</button>
+            {error && <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "13px", color: "#fca5a5" }}>{error}</p>}
+            {submitted && <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "13px", color: "#C9A84C" }}>Thanks. Your request has been sent.</p>}
+          </form>
         </Fade>
       </div>
     </section>
@@ -1412,6 +1490,32 @@ function Footer() {
         <div style={{ textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", color: "rgba(255,255,255,0.2)", margin: 0 }}>
             (978) 815-8354 &middot; hello@exquisitecustomglass.com
+          </p>
+          <p style={{ margin: "8px 0 0", display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
+            <a
+              href="https://www.instagram.com/exquisite__customglass_showers?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontFamily: "var(--font-body), sans-serif",
+                fontSize: "10px",
+                color: "rgba(255,255,255,0.45)",
+                textDecoration: "none",
+              }}
+            >
+              Instagram
+            </a>
+            <Link
+              href="/blog"
+              style={{
+                fontFamily: "var(--font-body), sans-serif",
+                fontSize: "10px",
+                color: "rgba(255,255,255,0.45)",
+                textDecoration: "none",
+              }}
+            >
+              Blog
+            </Link>
           </p>
         </div>
         <div style={{ textAlign: "right" }}>

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Services | Exquisite Custom Glass Showers",
+  title: "Glass Shower Door Installation Services | Haverhill MA",
   description:
-    "Custom glass shower doors in Massachusetts and New Hampshire, frameless enclosures, glass railings, mirrors, and commercial glazing—made to measure with white-glove installation.",
+    "Custom glass shower door installation in Haverhill, MA and nearby towns including Andover, North Andover, Methuen, Lawrence, Salem NH, and Plaistow NH.",
 };
 
 const ctaClass =
@@ -88,6 +88,13 @@ export default function ServicesPage() {
             Every project starts with field verification and honest timelines. Below is how
             we approach the four pillars of our work for homeowners, designers, architects,
             and commercial clients throughout Massachusetts and New Hampshire.
+          </p>
+          <p className="font-body mt-4 max-w-3xl text-base leading-relaxed text-charcoal/80">
+            Want a quick ballpark for a shower project in Haverhill or nearby towns? Start on our{" "}
+            <Link href="/#contact" className="underline underline-offset-4 hover:text-gold">
+              homepage estimate form
+            </Link>{" "}
+            and share your town plus rough opening details.
           </p>
         </div>
       </section>

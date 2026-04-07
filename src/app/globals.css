@@ -40,6 +40,10 @@ html {
   flex-wrap: wrap;
 }
 
+.ecg-root section[id] {
+  scroll-margin-top: 84px;
+}
+
 .ecg-root .ecg-hero-stats {
   display: flex;
   flex-wrap: wrap;
@@ -57,6 +61,16 @@ html {
   .ecg-root .ecg-hero-stats > div {
     min-width: 50%;
     border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  }
+
+  .ecg-root .ecg-hero-cta {
+    width: 100%;
+    gap: 12px;
+  }
+
+  .ecg-root .ecg-hero-cta > a {
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -284,6 +298,8 @@ html {
   color: #c9a84c;
   cursor: pointer;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .ecg-root .ecg-nav-menu-btn:focus-visible {
@@ -298,6 +314,85 @@ html {
 
   .ecg-root .ecg-nav-menu-btn {
     display: flex !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .ecg-root .ecg-s-pad {
+    padding: clamp(48px, 10vw, 72px) 16px;
+  }
+
+  .ecg-root .ecg-s-pad-sm {
+    padding: clamp(40px, 9vw, 64px) 16px;
+  }
+
+  .ecg-root .ecg-hero-pad {
+    padding: 0 16px clamp(42px, 10vw, 64px);
+    min-height: 100svh;
+  }
+
+  .ecg-root .ecg-portfolio-copy {
+    padding: 24px 16px;
+  }
+
+  .ecg-root .ecg-contact-grid button,
+  .ecg-root .ecg-contact-grid input,
+  .ecg-root .ecg-contact-grid select,
+  .ecg-root .ecg-contact-grid textarea {
+    font-size: 16px;
+  }
+
+  .ecg-root .ecg-portfolio-thumbs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding-bottom: 6px;
+  }
+
+  .ecg-root .ecg-portfolio-thumbs > button {
+    flex: 0 0 68px !important;
+    width: 68px !important;
+    height: 68px !important;
+  }
+
+  .ecg-root .ecg-hero-stats > div > div:first-child {
+    font-size: 20px !important;
+  }
+
+  .ecg-root .ecg-hero-stats > div > div:last-child {
+    font-size: 10px !important;
+    letter-spacing: 1.6px !important;
+  }
+
+  .ecg-root .ecg-services-row p,
+  .ecg-root .ecg-process-grid p,
+  .ecg-root .ecg-about-grid p,
+  .ecg-root .ecg-contact-grid p,
+  .ecg-root .ecg-service-area-grid p {
+    font-size: 14px !important;
+    line-height: 1.75 !important;
+  }
+
+  .ecg-root .ecg-services-row h3,
+  .ecg-root .ecg-process-grid h3,
+  .ecg-root .ecg-portfolio-copy h3 {
+    line-height: 1.25 !important;
+  }
+
+  .ecg-root [role="dialog"][aria-label="Site menu"] {
+    padding-top: max(88px, env(safe-area-inset-top)) !important;
+    padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ecg-root *,
+  .ecg-root *::before,
+  .ecg-root *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
   }
 }
 
