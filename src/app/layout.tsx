@@ -19,6 +19,9 @@ const dmSansBody = DM_Sans({
 
 const siteUrl = getSiteUrl();
 
+/** Default share image (landscape) for Open Graph and Twitter. */
+const defaultOgImage = "/gallery/portfolio-shower-frameless-stock.jpg";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -50,12 +53,21 @@ export const metadata: Metadata = {
     title: "Custom Glass Shower Doors in Haverhill MA | Exquisite Custom Glass",
     description:
       "Frameless shower doors and custom shower glass installation from Haverhill, MA across North Shore MA, Seacoast NH, and Boston.",
+    images: [
+      {
+        url: defaultOgImage,
+        width: 1280,
+        height: 853,
+        alt: "Custom frameless shower glass installation",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Custom Glass Shower Doors in Haverhill MA",
     description:
       "Custom frameless shower doors in Haverhill, MA with a 36-mile service radius.",
+    images: [defaultOgImage],
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "/" },
