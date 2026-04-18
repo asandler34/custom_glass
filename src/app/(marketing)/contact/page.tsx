@@ -48,8 +48,9 @@ export default function ContactPage() {
               Send a message
             </h2>
             <p className="font-body mt-3 text-sm text-charcoal/70">
-              Form submission is wired for demo—open DevTools console to inspect
-              the payload until a backend is connected.
+              Submit the form and we&apos;ll email you a confirmation. We
+              typically reply within one business day. If anything urgent comes
+              up, call us at the number on this page.
             </p>
             <div className="mt-8">
               <ContactForm />
