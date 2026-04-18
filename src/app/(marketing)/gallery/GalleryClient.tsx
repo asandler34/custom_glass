@@ -13,43 +13,58 @@ const filters: { id: Category; label: string }[] = [
   { id: "railings", label: "Railings" },
 ];
 
-/** Client project photos — exported ~max 1024px JPEG (~100–200KB each) in /public/gallery */
+/**
+ * Project photos in `/public/gallery` (mostly client installs).
+ * `ecg-residential-shower-corner-install.jpg` — Unsplash, Unsplash License (photo-1600566753190); alt town is representative, not a verified job site.
+ */
 const items = [
   {
     id: "ecg-9109",
     category: "commercial" as const,
     src: "/gallery/ecg-commercial-glass-office.jpg",
-    alt: "Commercial glass partition wall and doors with black framing",
+    alt: "Commercial glass partition wall and doors with black framing in Winchester, MA",
   },
   {
     id: "ecg-9110",
     category: "commercial" as const,
     src: "/gallery/ecg-commercial-glass-installation.jpg",
-    alt: "Glass partition installation with brick interior and drop ceiling",
+    alt: "Glass partition installation with brick interior and drop ceiling in Haverhill, MA",
   },
   {
     id: "ecg-9108",
     category: "railings" as const,
     src: "/gallery/ecg-railing-boston-balcony.jpg",
-    alt: "Exterior glass balcony railing overlooking Boston and the Common",
+    alt: "Exterior glass balcony railing with city views in Salem, MA",
   },
   {
     id: "ecg-9105",
     category: "railings" as const,
     src: "/gallery/ecg-railing-residential-dusk.jpg",
-    alt: "Residential glass railing on a modern balcony at dusk",
+    alt: "Glass railing on a modern balcony at dusk in Portsmouth, NH",
   },
   {
     id: "ecg-9104",
     category: "railings" as const,
     src: "/gallery/ecg-railing-residential-exterior.jpg",
-    alt: "Two-story home with glass balcony railing and large glass doors",
+    alt: "Two-story home with glass balcony railing and large glass doors in Rye Beach, NH",
   },
   {
     id: "ecg-9097",
     category: "showers" as const,
     src: "/gallery/ecg-shower-frameless-vaulted.jpg",
-    alt: "Custom frameless shower enclosure with vaulted ceiling and marble tile",
+    alt: "Custom frameless shower enclosure with vaulted ceiling and marble tile in Lexington, MA",
+  },
+  {
+    id: "ecg-9111",
+    category: "showers" as const,
+    src: "/gallery/ecg-residential-marble-glass-shower.jpg",
+    alt: "Walk-in frameless shower with marble-look tile, black hardware, and built-in bench in Marblehead, MA",
+  },
+  {
+    id: "ecg-9112",
+    category: "showers" as const,
+    src: "/gallery/ecg-residential-shower-corner-install.jpg",
+    alt: "Modern bathroom with clear glass shower enclosure, neutral tile, and warm wood vanity in Reading, MA",
   },
 ] as const;
 
