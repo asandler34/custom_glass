@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { blogPosts } from "@/lib/blog";
+import { withCanonical } from "@/lib/seo/metadata-helpers";
 
-export const metadata: Metadata = {
-  title: "Blog | Exquisite Custom Glass",
+export const metadata: Metadata = withCanonical("/blog", {
+  title: "Guides: Shower Glass, Railings & Cost | Exquisite Custom Glass",
   description:
-    "Insights on custom shower glass, frameless doors, pricing, and installation across Haverhill, North Shore MA, and Seacoast NH.",
-};
+    "Practical articles on frameless shower cost in NH and MA, glass railings, mirrors, and how custom glass installation works. Haverhill-based team.",
+});
 
 export default function BlogPage() {
   return (

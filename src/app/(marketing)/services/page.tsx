@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withCanonical } from "@/lib/seo/metadata-helpers";
+import { SERVICE_PATHS, locationHref } from "@/lib/seo/urls";
 
-export const metadata: Metadata = {
-  title: "Glass Shower Door Installation Services | Haverhill MA",
+export const metadata: Metadata = withCanonical("/services", {
+  title: "Glass Installation Services | Showers, Railings, Mirrors | Haverhill MA",
   description:
-    "Custom glass shower door installation in Haverhill, MA and nearby towns including Andover, North Andover, Methuen, Lawrence, Salem NH, and Plaistow NH.",
-};
+    "Custom glass services: frameless showers, railings, mirrors, and partitions. Haverhill-based, serving the North Shore, Boston, and southern New Hampshire. Request an estimate.",
+});
 
 const ctaClass =
   "inline-flex bg-navy-deep px-8 py-3.5 font-body text-sm font-medium uppercase tracking-widest text-gold transition-colors hover:bg-navy-mid";
@@ -96,6 +98,37 @@ export default function ServicesPage() {
             </Link>{" "}
             and share your town plus rough opening details.
           </p>
+          <div className="mt-8 border border-gray-light bg-navy-deep/5 p-6">
+            <p className="font-body text-xs font-medium uppercase tracking-widest text-gold">
+              Dedicated service pages
+            </p>
+            <ul className="mt-3 grid list-none gap-2 sm:grid-cols-2">
+              {SERVICE_PATHS.map((p) => (
+                <li key={p}>
+                  <Link
+                    href={`/${p}`}
+                    className="font-body text-sm text-gold underline-offset-2 hover:underline"
+                  >
+                    {p.replace(/-/g, " ")}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 font-body text-sm text-charcoal/75">
+              Local pages:{" "}
+              <Link className="text-gold hover:underline" href="/locations">
+                all areas
+              </Link>
+              {", "}
+              <Link className="text-gold hover:underline" href={locationHref("portsmouth-nh")}>
+                Portsmouth NH
+              </Link>
+              {", "}
+              <Link className="text-gold hover:underline" href={locationHref("boston-ma")}>
+                Boston MA
+              </Link>
+            </p>
+          </div>
         </div>
       </section>
 

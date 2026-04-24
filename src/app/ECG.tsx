@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BUSINESS, PUBLIC_CONTACT_EMAIL } from "@/lib/business";
 import {
   useEffect,
   useRef,
@@ -680,156 +681,77 @@ function Portfolio() {
   const [active, setActive] = useState(0);
   const projects: PortfolioEntry[] = [
     {
-      title: "Custom shower enclosure",
+      title: "Brushed gold frameless enclosure",
+      loc: "Portsmouth, NH",
+      type: "shower",
+      imageSrc: "/gallery/IMG_9236.JPEG",
+      shortLabel: "Shower Enclosure",
+      desc: "Frameless clear glass with warm brushed-gold hardware on marble-look tile and mosaic flooring—tight sight lines from vanity to door for a bright, high-end bath.",
+      tags: ["Frameless", "Brushed Gold", "Marble Bath"],
+    },
+    {
+      title: "Walk-in + illuminated mirror",
       loc: "Andover, MA",
       type: "shower",
-      imageSrc: "/gallery/portfolio-custom-shower-premium.jpg",
-      shortLabel: "Shower Enclosure",
-      desc: "Frameless shower glass tailored to the bathroom layout—clear tempered panels, minimal hardware, and clean sight lines from curb to ceiling for a bright, open bath.",
-      tags: ["Frameless Glass", "Tempered Panels", "Primary Bath"],
+      imageSrc: "/gallery/IMG_9237.JPEG",
+      shortLabel: "Shower + Mirror",
+      desc: "A spacious walk-in frameless shower with rain and hand showers, paired with a backlit mirror and marble vanity—chrome hardware and even light across the room.",
+      tags: ["Walk-In", "Lighted Mirror", "Chrome"],
     },
     {
-      title: "Install in progress",
+      title: "Matte black walk-in with bench",
       loc: "Haverhill, MA",
-      type: "partition",
-      imageSrc: "/gallery/ecg-commercial-glass-installation.jpg",
-      shortLabel: "Installation",
-      desc: "On-site installation of a multi-panel glass enclosure—layout, setting, and protection of tempered glass before final hardware and seal completion.",
-      tags: ["Site Install", "Multi Panel", "Tempered Glass"],
-    },
-    {
-      title: "High-rise balcony",
-      loc: "Salem, MA",
-      type: "balcony",
-      imageSrc: "/gallery/ecg-railing-boston-balcony.jpg",
-      shortLabel: "High Rise",
-      desc: "Exterior balcony railing with clear tempered glass and metal posts, engineered for height and exposure while preserving open views across the treetops and skyline.",
-      tags: ["Balcony System", "Structural Glass", "City Views"],
-    },
-    {
-      title: "Residential balcony at dusk",
-      loc: "Portsmouth, NH",
-      type: "railing2",
-      imageSrc: "/gallery/ecg-railing-residential-dusk.jpg",
-      shortLabel: "Balcony Dusk",
-      desc: "Corner glass guardrail on a contemporary home at twilight—clean posts, continuous handrail, and panels aligned for sightlines and code-compliant loads.",
-      tags: ["Exterior Railing", "Corner Detail", "Post & Rail"],
-    },
-    {
-      title: "House + glass railing",
-      loc: "Rye Beach, NH",
-      type: "railing1",
-      imageSrc: "/gallery/ecg-railing-residential-exterior.jpg",
-      shortLabel: "House Railing",
-      desc: "Second-story perimeter glass railing with black posts, paired with large sliding doors and windows for a cohesive indoor–outdoor glass package.",
-      tags: ["Multi Story", "Black Posts", "Ultra Clear"],
-    },
-    {
-      title: "Frameless shower",
-      loc: "Lexington, MA",
       type: "shower",
-      imageSrc: "/gallery/ecg-shower-frameless-vaulted.jpg",
-      shortLabel: "Frameless Shower",
-      desc: "Custom frameless enclosure following a vaulted ceiling and marble surround—precision cuts, minimal hardware, and clear glass for an open, spa-like bath.",
-      tags: ["Frameless", "Vaulted Ceiling", "Marble Bath"],
+      imageSrc: "/gallery/IMG_9238.jpg",
+      shortLabel: "Black Hardware",
+      desc: "Frameless door and panel on a curb with a stone bench, matte black pulls and hinges, and marble-look tile with a feature niche—built for a clean, modern look.",
+      tags: ["Frameless", "Matte Black", "Built-In Bench"],
     },
     {
-      title: "Custom glass mirror",
-      loc: "Winchester, MA",
-      type: "mirror",
-      imageSrc: "/gallery/portfolio-mirror.jpg",
-      imageBrightness: 0.78,
-      shortLabel: "Bath Mirror",
-      desc: "Large-format vanity mirror measured and installed for a seamless wall of reflection—polished edges, flush mounting, and careful alignment with lighting and tile for a refined bath.",
-      tags: ["Custom Cut", "Polished Edge", "Vanity Wall"],
-    },
-    {
-      title: "Frameless shower glass",
-      loc: "Reading, MA",
+      title: "Corner frameless install",
+      loc: "Boston, MA",
       type: "shower",
-      imageSrc: "/gallery/portfolio-shower-frameless-stock.jpg",
-      shortLabel: "Frameless Bath",
-      desc: "Clear tempered glass enclosure with minimal hardware and a clean curb line—built for everyday use while keeping the bath bright and visually open.",
-      tags: ["Frameless", "Tempered Glass", "Minimal Hardware"],
+      imageSrc: "/gallery/IMG_9239.JPEG",
+      shortLabel: "Corner Unit",
+      desc: "Ninety-degree frameless glass with soft subway tile, decorative accent band, and pebble floor—fixed panel and door aligned for a compact, open corner layout.",
+      tags: ["Corner Shower", "Subway Tile", "Frameless"],
     },
     {
-      title: "Walk-in glass shower",
-      loc: "Bedford, NH",
+      title: "Dramatic marble + black",
+      loc: "Hampton, NH",
       type: "shower",
-      imageSrc: "/gallery/portfolio-shower-walkin.jpg",
-      shortLabel: "Walk-In",
-      desc: "Open walk-in layout with a fixed panel and swing door, aligned to tile and plumbing so every seal lands square and water stays where it belongs.",
-      tags: ["Walk-In", "Fixed Panel", "Precision Fit"],
+      imageSrc: "/gallery/IMG_9241.JPEG",
+      shortLabel: "Frameless",
+      desc: "Bold veined wall tile, dark mosaic floor, and ladder-style black hardware on a frameless door—pony wall run and a recessed niche for a statement shower.",
+      tags: ["Black Hardware", "Marble Look", "Niche"],
     },
     {
-      title: "Marble & glass shower",
+      title: "Accessible walk-in",
       loc: "Marblehead, MA",
       type: "shower",
-      imageSrc: "/gallery/ecg-residential-marble-glass-shower.jpg",
-      shortLabel: "Marble Shower",
-      desc: "Walk-in frameless glass with marble-look tile, black hardware, and a built-in bench—panels and door aligned to niches and sight lines for a cohesive, spa-like bath.",
-      tags: ["Walk-In", "Marble Tile", "Black Hardware"],
+      imageSrc: "/gallery/IMG_9242.JPEG",
+      shortLabel: "Walk-In",
+      desc: "Large frameless door and return panel on dark veined tile with a corner bench, grab bars, and a handheld—luxury and everyday safety in one layout.",
+      tags: ["Grab Bars", "Bench", "Frameless"],
     },
     {
-      title: "Modern shower doors",
-      loc: "Amherst, NH",
+      title: "Marble + chrome frameless",
+      loc: "Lowell, MA",
       type: "shower",
-      imageSrc: "/gallery/portfolio-shower-doors.jpg",
-      shortLabel: "Shower Doors",
-      desc: "Sleek door hardware and polished glass edges for a refined closure—smooth swing, quiet contact, and hardware finished to match the rest of the bath.",
-      tags: ["Door Hardware", "Polished Edge", "Primary Bath"],
+      imageSrc: "/gallery/IMG_9243.JPEG",
+      shortLabel: "Shower",
+      desc: "Horizontal marble-look tile, dark shower pan for contrast, and a chrome door handle—open sight lines beside a white vanity and round mirror for a fresh primary bath.",
+      tags: ["Chrome", "Frameless", "Marble"],
     },
     {
-      title: "On-site glass installation",
-      loc: "Lexington, MA",
-      type: "partition",
-      imageSrc: "/gallery/portfolio-install-onsite.jpg",
-      shortLabel: "Site Install",
-      desc: "Crew setting large-format glass in place—suction cups, shims, and level checks before final anchoring so every panel lands plumb and true to the opening.",
-      tags: ["Field Fit", "Tempered Panels", "Commercial"],
-    },
-    {
-      title: "Precision glass fitting",
-      loc: "Haverhill, MA",
-      type: "partition",
-      imageSrc: "/gallery/portfolio-install-fitting.jpg",
-      shortLabel: "Fitting",
-      desc: "Hands-on alignment of glass to frame and hardware—measuring twice, easing the panel into position, and verifying gaps before the final tighten-down.",
-      tags: ["Hand Fit", "Alignment", "Site Work"],
-    },
-    {
-      title: "Glass panel placement",
-      loc: "Amherst, NH",
-      type: "partition",
-      imageSrc: "/gallery/portfolio-install-placement.jpg",
-      shortLabel: "Placement",
-      desc: "Coordinated lift and set of heavy glass—teamwork, edge protection, and controlled movement from dolly to opening for a safe, scratch-free install.",
-      tags: ["Team Lift", "Edge Safe", "Multi Panel"],
-    },
-    {
-      title: "Shower enclosure install",
+      title: "Corner spa shower",
       loc: "Reading, MA",
       type: "shower",
-      imageSrc: "/gallery/ecg-residential-shower-corner-install.jpg",
-      shortLabel: "Shower Install",
-      desc: "Bright bath with a clear glass enclosure—layout templated to the tile, hardware aligned for even reveals, and seals finished so the shower reads as part of the architecture, not an afterthought.",
-      tags: ["Clear Glass", "Primary Bath", "Precision Fit"],
+      imageSrc: "/gallery/IMG_9244.JPEG",
+      shortLabel: "Shower",
+      desc: "Frameless corner unit with pebble-look floor, large-format wall tile, and oil-rubbed-bronze-style hardware with rain, wall, and hand showers for a true spa feel.",
+      tags: ["Corner", "Frameless", "Full Fixtures"],
     },
-    { title: "Custom Shower Enclosure", loc: "Salem, MA", type: "shower",
-      desc: "Frameless glass shower enclosure custom fitted to a vaulted ceiling with skylight. 3/8\" ultra-clear tempered glass with polished chrome hardware, precision cut to match the roofline angle.",
-      tags: ["Frameless Design", "Vaulted Ceiling Fit", "Chrome Hardware"] },
-    { title: "Exterior Glass Railing", loc: "Bedford, NH", type: "railing1",
-      desc: "Structural glass railing system for a second-story balcony on a coastal new build. Half-inch tempered glass panels with matte black post mount system, engineered for wind load compliance.",
-      tags: ["1/2\" Tempered", "Black Post Mount", "Wind Rated"] },
-    { title: "Residential Balcony System", loc: "Rye Beach, NH", type: "railing2",
-      desc: "Full perimeter glass railing with seamless corner transitions. Designed to preserve unobstructed views while meeting all structural code requirements for elevated decks.",
-      tags: ["Full Perimeter", "Corner Transitions", "Code Compliant"] },
-    { title: "Commercial Glass Partition", loc: "Winchester, MA", type: "partition",
-      desc: "Floor-to-ceiling glass partition walls for a commercial office space with exposed brick. Multi-panel system with minimal framing to maintain visual openness.",
-      tags: ["Floor to Ceiling", "Minimal Frame", "Multi Panel"] },
-    { title: "High Rise Glass Railing", loc: "Marblehead, MA", type: "balcony",
-      desc: "Glass guard railing installed on an elevated balcony with open sightlines. Precision engineered for structural integrity at height with a clean base channel mount.",
-      tags: ["High Rise Rated", "Base Channel", "City Views"] },
   ];
   const p = projects[active];
   return (
@@ -1358,6 +1280,7 @@ function Contact() {
         name: `${(form.elements.namedItem("firstName") as HTMLInputElement).value} ${(form.elements.namedItem("lastName") as HTMLInputElement).value}`.trim(),
         email: (form.elements.namedItem("email") as HTMLInputElement).value,
         phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+        zip: (form.elements.namedItem("zip") as HTMLInputElement).value,
         projectType: (form.elements.namedItem("projectType") as HTMLSelectElement).value,
         message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
         sourcePage: window.location.pathname,
@@ -1399,16 +1322,28 @@ function Contact() {
               Every project starts with a conversation. Tell us about your space and we&apos;ll schedule a complimentary on-site consultation.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
-              {[
-                { l: "Phone", v: "(978) 815-8354" },
-                { l: "Email", v: "hello@exquisitecustomglass.com" },
-                { l: "Based In", v: "Haverhill, Massachusetts" },
-              ].map((item, i) => (
-                <div key={i}>
-                  <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", display: "block", marginBottom: "5px" }}>{item.l}</span>
-                  <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>{item.v}</span>
-                </div>
-              ))}
+              <div>
+                <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", display: "block", marginBottom: "5px" }}>Phone</span>
+                <a
+                  href={`tel:${BUSINESS.phoneE164}`}
+                  style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}
+                >
+                  {BUSINESS.phoneDisplay}
+                </a>
+              </div>
+              <div>
+                <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", display: "block", marginBottom: "5px" }}>Email</span>
+                <a
+                  href={`mailto:${PUBLIC_CONTACT_EMAIL}`}
+                  style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}
+                >
+                  {PUBLIC_CONTACT_EMAIL}
+                </a>
+              </div>
+              <div>
+                <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.5)", display: "block", marginBottom: "5px" }}>Based In</span>
+                <span style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}>Haverhill, Massachusetts</span>
+              </div>
             </div>
           </div>
         </Fade>
@@ -1432,6 +1367,10 @@ function Contact() {
             <div>
               <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Phone</label>
               <input name="phone" type="tel" style={iStyle("phone")} onFocus={() => setFoc("phone")} onBlur={() => setFoc(null)} />
+            </div>
+            <div>
+              <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Zip / postal code</label>
+              <input name="zip" autoComplete="postal-code" style={iStyle("zip")} onFocus={() => setFoc("zip")} onBlur={() => setFoc(null)} />
             </div>
             <div>
               <label style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase", color: "rgba(201,168,76,0.4)", display: "block", marginBottom: "3px" }}>Project Type</label>
@@ -1476,6 +1415,94 @@ function Contact() {
   );
 }
 
+function SiteIndexLinks() {
+  const a: CSSProperties = {
+    fontFamily: "var(--font-body), sans-serif",
+    fontSize: "12px",
+    color: "rgba(255,255,255,0.45)",
+    textDecoration: "none",
+    display: "block",
+    marginBottom: "8px",
+  };
+  const h = {
+    fontFamily: "var(--font-body), sans-serif",
+    fontSize: "9px",
+    letterSpacing: "2px",
+    textTransform: "uppercase" as const,
+    color: "#C9A84C",
+    marginBottom: "12px",
+  };
+  return (
+    <section className="ecg-s-pad-sm" style={{ background: "#07101f" }} aria-label="Services and local pages">
+      <PLine style={{ marginBottom: "40px" }} />
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 20px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: 32,
+          }}
+        >
+          <div>
+            <div style={h}>Services</div>
+            <Link href="/frameless-shower-doors" style={a}>
+              Frameless shower doors
+            </Link>
+            <Link href="/custom-glass-shower-enclosures" style={a}>
+              Custom glass shower enclosures
+            </Link>
+            <Link href="/glass-railings" style={a}>
+              Glass railings
+            </Link>
+            <Link href="/glass-partitions" style={a}>
+              Glass partitions
+            </Link>
+            <Link href="/custom-mirrors" style={a}>
+              Custom mirrors
+            </Link>
+            <Link href="/glass-repair" style={a}>
+              Glass repair
+            </Link>
+          </div>
+          <div>
+            <div style={h}>Service areas</div>
+            <Link href="/locations" style={a}>
+              All service areas
+            </Link>
+            <Link href="/haverhill-ma" style={a}>
+              Haverhill, MA
+            </Link>
+            <Link href="/portsmouth-nh" style={a}>
+              Portsmouth, NH
+            </Link>
+            <Link href="/boston-ma" style={a}>
+              Boston, MA
+            </Link>
+            <Link href="/north-shore-ma" style={a}>
+              North Shore, MA
+            </Link>
+            <Link href="/southern-nh" style={a}>
+              Southern NH
+            </Link>
+          </div>
+          <div>
+            <div style={h}>Guides</div>
+            <Link href="/blog" style={a}>
+              Glass guides { "&" } pricing articles
+            </Link>
+            <Link href="/blog/cost-of-frameless-shower-doors-nh-ma" style={a}>
+              Frameless shower cost in NH { "&" } MA
+            </Link>
+            <Link href="/contact" style={a}>
+              Request a quote
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="ecg-footer-pad" style={{ background: "#07101f", borderTop: "1px solid rgba(201,168,76,0.08)" }}>
@@ -1489,7 +1516,7 @@ function Footer() {
         </div>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-body), sans-serif", fontSize: "10px", color: "rgba(255,255,255,0.2)", margin: 0 }}>
-            (978) 815-8354 &middot; hello@exquisitecustomglass.com
+            {BUSINESS.phoneDisplay} &middot; {PUBLIC_CONTACT_EMAIL}
           </p>
           <p style={{ margin: "8px 0 0", display: "flex", justifyContent: "center", gap: "14px", flexWrap: "wrap" }}>
             <a
@@ -1560,6 +1587,7 @@ export default function ECG() {
       <FAQ />
       <ServiceArea />
       <Contact />
+      <SiteIndexLinks />
       <Footer />
     </div>
   );

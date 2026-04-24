@@ -1,9 +1,12 @@
+/** Only inbox shown on the site (mailto, footer, contact, JSON-LD). */
+export const PUBLIC_CONTACT_EMAIL = "exquisitecustomglass@gmail.com" as const;
+
 export const BUSINESS = {
   name: "Exquisite Custom Glass",
   legalName: "Exquisite Custom Glass Showers",
   phoneDisplay: "(978) 815-8354",
   phoneE164: "+19788158354",
-  email: "hello@exquisitecustomglass.com",
+  email: PUBLIC_CONTACT_EMAIL,
   address: {
     streetAddress: "690 S. Main St.",
     addressLocality: "Haverhill",

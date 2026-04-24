@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { GalleryClient } from "./GalleryClient";
+import { withCanonical } from "@/lib/seo/metadata-helpers";
 
-export const metadata: Metadata = {
-  title: "Gallery | Exquisite Custom Glass Showers",
+export const metadata: Metadata = withCanonical("/gallery", {
+  title: "Project Gallery | Frameless Showers & Glass | Exquisite Custom Glass",
   description:
-    "Project gallery: custom showers, glass railings, and commercial glass installations across Massachusetts and New Hampshire.",
-};
+    "Recent custom glass: frameless showers, railings, and mirrors in MA and NH. Haverhill-based installers.",
+});
 
 export default function GalleryPage() {
   return (

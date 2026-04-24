@@ -8,12 +8,15 @@ import { Menu, X } from "lucide-react";
 import { brandLogo } from "@/lib/branding";
 import { EASE } from "@/lib/motion";
 
+import { BUSINESS } from "@/lib/business";
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
+  { href: "/locations", label: "Areas" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
-  { href: "/blog", label: "Blog" },
+  { href: "/blog", label: "Guides" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
@@ -80,12 +83,18 @@ export function Nav() {
             ))}
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-5 md:flex">
+            <a
+              href={`tel:${BUSINESS.phoneE164}`}
+              className="font-body text-sm font-medium text-white-warm/90 transition-opacity hover:opacity-80"
+            >
+              {BUSINESS.phoneDisplay}
+            </a>
             <Link
               href="/contact"
               className="inline-flex border border-gold px-5 py-2.5 font-body text-sm font-medium uppercase tracking-widest text-gold transition-colors duration-200 hover:border-gold-light hover:text-gold-light"
             >
-              Free Estimate
+              Request a quote
             </Link>
           </div>
 
@@ -162,7 +171,7 @@ export function Nav() {
                   className="inline-flex border border-gold px-6 py-3 font-body text-sm font-medium uppercase tracking-widest text-gold"
                   onClick={() => setMobileOpen(false)}
                 >
-                  Free Estimate
+                  Request a quote
                 </Link>
               </motion.div>
             </motion.nav>

@@ -1,5 +1,5 @@
 import { getSiteUrl } from "@/lib/site";
-import { BUSINESS } from "@/lib/business";
+import { BUSINESS, PUBLIC_CONTACT_EMAIL } from "@/lib/business";
 
 /** LocalBusiness + WebSite structured data for Google and other crawlers */
 export function SeoJsonLd() {
@@ -15,7 +15,7 @@ export function SeoJsonLd() {
           "Custom glass shower doors, frameless shower door installation, glass railings, and architectural mirrors in a 36-mile service area from Haverhill, MA.",
         url: base,
         telephone: BUSINESS.phoneE164,
-        email: BUSINESS.email,
+        email: PUBLIC_CONTACT_EMAIL,
         image: `${base}/brand/ecg-logo-horizontal.svg`,
         address: {
           "@type": "PostalAddress",
@@ -50,6 +50,9 @@ export function SeoJsonLd() {
           closes: hours.closes,
         })),
         priceRange: "$$",
+        sameAs: [
+          "https://www.instagram.com/exquisite__customglass_showers",
+        ],
       },
       {
         "@type": "WebSite",
