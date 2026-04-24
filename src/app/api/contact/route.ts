@@ -1,4 +1,4 @@
-import { BUSINESS } from "@/lib/business";
+import { BUSINESS, PUBLIC_CONTACT_EMAIL } from "@/lib/business";
 import { getSiteUrl } from "@/lib/site";
 import { NextResponse } from "next/server";
 
@@ -6,6 +6,7 @@ type ContactPayload = {
   name?: string;
   phone?: string;
   email?: string;
+  zip?: string;
   projectType?: string;
   message?: string;
   sourcePage?: string;
@@ -27,6 +28,7 @@ export async function POST(req: Request) {
     const name = trim(body.name);
     const phone = trim(body.phone);
     const email = trim(body.email);
+    const zip = trim(body.zip);
     const projectType = trim(body.projectType);
     const message = trim(body.message);
     const sourcePage = trim(body.sourcePage) || "/";
@@ -50,7 +52,7 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.CONTACT_TO_EMAIL || BUSINESS.email;
+    const toEmail = process.env.CONTACT_TO_EMAIL || PUBLIC_CONTACT_EMAIL;
     const fromEmail = process.env.CONTACT_FROM_EMAIL || "no-reply@exquisitecustomglass.com";
     const base = getSiteUrl();
 
@@ -60,6 +62,7 @@ export async function POST(req: Request) {
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${phone || "(not provided)"}`,
+        `Zip: ${zip || "(not provided)"}`,
         `Project type: ${projectType}`,
         `Message: ${message}`,
         `Source page: ${sourcePage}`,
@@ -71,6 +74,7 @@ export async function POST(req: Request) {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone || "(not provided)"}</p>
+        <p><strong>Zip:</strong> ${zip || "(not provided)"}</p>
         <p><strong>Project type:</strong> ${projectType}</p>
         <p><strong>Message:</strong><br/>${message.replace(/\n/g, "<br/>")}</p>
         <p><strong>Source page:</strong> ${sourcePage}</p>
@@ -99,7 +103,7 @@ export async function POST(req: Request) {
       }
     } else {
       // Safe fallback for local/dev preview without email provider.
-      console.info("[lead:fallback]", { name, email, phone, projectType, sourcePage, message });
+      console.info("[lead:fallback]", { name, email, phone, zip, projectType, sourcePage, message });
     }
 
     return NextResponse.json({ ok: true });

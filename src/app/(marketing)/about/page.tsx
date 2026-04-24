@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { withCanonical } from "@/lib/seo/metadata-helpers";
 
-export const metadata: Metadata = {
-  title: "About Us | Exquisite Custom Glass Showers",
+export const metadata: Metadata = withCanonical("/about", {
+  title: "About Us | Exquisite Custom Glass",
   description:
-    "Learn about Exquisite Custom Glass—craftsmanship, values, and service across Massachusetts and New Hampshire.",
-};
+    "Haverhill-based custom glass: our team, process, and service across Massachusetts and New Hampshire. Frameless showers, railings, mirrors, and more.",
+});
 
 export default function AboutPage() {
   return (

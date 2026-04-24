@@ -1,4 +1,5 @@
 import { SeoJsonLd } from "@/components/SeoJsonLd";
+import { PersistentQuoteDock } from "@/components/layout/PersistentQuoteDock";
 import { getSiteUrl } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Playfair_Display } from "next/font/google";
@@ -20,7 +21,7 @@ const dmSansBody = DM_Sans({
 const siteUrl = getSiteUrl();
 
 /** Default share image (landscape) for Open Graph and Twitter. */
-const defaultOgImage = "/gallery/portfolio-shower-frameless-stock.jpg";
+const defaultOgImage = "/gallery/IMG_9236.JPEG";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -70,7 +71,6 @@ export const metadata: Metadata = {
     images: [defaultOgImage],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
@@ -89,9 +89,10 @@ export default function RootLayout({
       lang="en"
       className={`${playfairDisplay.variable} ${dmSansBody.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
+      <body className="min-h-full pb-16 sm:pb-[4.25rem]">
         <SeoJsonLd />
         {children}
+        <PersistentQuoteDock />
       </body>
     </html>
   );

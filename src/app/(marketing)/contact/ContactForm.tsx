@@ -26,6 +26,7 @@ export function ContactForm() {
         name: (form.elements.namedItem("name") as HTMLInputElement).value,
         phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
         email: (form.elements.namedItem("email") as HTMLInputElement).value,
+        zip: (form.elements.namedItem("zip") as HTMLInputElement).value,
         projectType: (form.elements.namedItem("projectType") as HTMLSelectElement).value,
         message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
         sourcePage: window.location.pathname,
@@ -123,6 +124,17 @@ export function ContactForm() {
           type="email"
           required
           autoComplete="email"
+          className={inputClass}
+        />
+      </div>
+      <div>
+        <label htmlFor="zip" className="font-body text-xs font-medium uppercase tracking-widest text-charcoal/70">
+          Zip / postal code
+        </label>
+        <input
+          id="zip"
+          name="zip"
+          autoComplete="postal-code"
           className={inputClass}
         />
       </div>

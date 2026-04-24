@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BUSINESS } from "@/lib/business";
+import { BUSINESS, PUBLIC_CONTACT_EMAIL } from "@/lib/business";
 import { ContactForm } from "./ContactForm";
+import { withCanonical } from "@/lib/seo/metadata-helpers";
 
-export const metadata: Metadata = {
-  title: "Contact Frameless Shower Door Installers | Haverhill MA",
+export const metadata: Metadata = withCanonical("/contact", {
+  title: "Contact & Free Estimate | Exquisite Custom Glass | Haverhill MA",
   description:
-    "Contact custom shower glass installers near Haverhill, MA for frameless shower door installation and replacement across North Shore MA and southern NH.",
-};
+    "Request a free estimate: custom shower glass, railings, mirrors. (978) 815-8354. Haverhill, MA. Serving the North Shore, Boston, and southern New Hampshire within our service area.",
+});
 
 const PHONE_DISPLAY = BUSINESS.phoneDisplay;
 const PHONE_HREF = `tel:${BUSINESS.phoneE164}`;
-const EMAIL = BUSINESS.email;
+const EMAIL = PUBLIC_CONTACT_EMAIL;
 const ADDRESS_LINE = BUSINESS.address.streetAddress;
 const CITY_LINE = `${BUSINESS.address.addressLocality}, ${BUSINESS.address.addressRegion} ${BUSINESS.address.postalCode}`;
 
