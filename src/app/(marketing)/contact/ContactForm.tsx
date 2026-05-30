@@ -62,7 +62,7 @@ export function ContactForm() {
         window.location.assign("/thank-you");
       }
     } catch {
-      setError("Something went wrong. Please call us at (978) 815-8354.");
+      setError("Something went wrong. Please call us at 603-396-7828.");
     } finally {
       setSubmitting(false);
     }

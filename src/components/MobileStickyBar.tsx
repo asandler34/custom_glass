@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-const PHONE_DISPLAY = "(978) 815-8354";
-const PHONE_HREF = "tel:+19788158354";
+const PHONE_DISPLAY = "603-396-7828";
+const PHONE_HREF = "tel:+16033967828";
 
 export function MobileStickyBar() {
   return (

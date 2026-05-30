@@ -5,8 +5,8 @@ import Link from "next/link";
 const TEXTURE_IMAGE =
   "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=2000&q=75";
 
-const PHONE_DISPLAY = "(978) 815-8354";
-const PHONE_HREF = "tel:+19788158354";
+const PHONE_DISPLAY = "603-396-7828";
+const PHONE_HREF = "tel:+16033967828";
 
 export function CTABanner() {
   return (

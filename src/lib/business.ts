@@ -4,8 +4,8 @@ export const PUBLIC_CONTACT_EMAIL = "exquisitecustomglass@gmail.com" as const;
 export const BUSINESS = {
   name: "Exquisite Custom Glass",
   legalName: "Exquisite Custom Glass Showers",
-  phoneDisplay: "(978) 815-8354",
-  phoneE164: "+19788158354",
+  phoneDisplay: "603-396-7828",
+  phoneE164: "+16033967828",
   email: PUBLIC_CONTACT_EMAIL,
   address: {
     streetAddress: "690 S. Main St.",

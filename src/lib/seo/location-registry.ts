@@ -22,7 +22,7 @@ export const locationPages: Record<LocationPath, LocationPageData> = {
     metadata: {
       title: "Custom Glass Company in Haverhill MA | Exquisite Custom Glass",
       description:
-        "Custom frameless showers, railings, mirrors, and glass repair from our Haverhill shop. Local measurement, fabrication, and install. Call (978) 815-8354 or request a quote.",
+        "Custom frameless showers, railings, mirrors, and glass repair from our Haverhill shop. Local measurement, fabrication, and install. Call 603-396-7828 or request a quote.",
     },
     h1: "Custom Glass Company in Haverhill, MA",
     intro:
@@ -52,7 +52,7 @@ export const locationPages: Record<LocationPath, LocationPageData> = {
     metadata: {
       title: "Custom Glass in Portsmouth NH | Showers, Railings & Mirrors",
       description:
-        "Portsmouth Seacoast: frameless shower doors, railings, and mirrors. Haverhill-based team; local estimates and project photos. (978) 815-8354.",
+        "Portsmouth Seacoast: frameless shower doors, railings, and mirrors. Haverhill-based team; local estimates and project photos. 603-396-7828.",
     },
     h1: "Custom Glass Company in Portsmouth, NH",
     intro:
@@ -141,7 +141,7 @@ export const locationPages: Record<LocationPath, LocationPageData> = {
     metadata: {
       title: "Custom Glass in Newburyport MA | Exquisite Custom Glass",
       description:
-        "Newburyport and Plum Island area: custom shower glass, railings, and mirrors. North Shore service from a Haverhill team. (978) 815-8354.",
+        "Newburyport and Plum Island area: custom shower glass, railings, and mirrors. North Shore service from a Haverhill team. 603-396-7828.",
     },
     h1: "Custom Glass Company in Newburyport, MA",
     intro:

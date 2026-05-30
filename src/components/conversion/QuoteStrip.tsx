@@ -37,8 +37,8 @@ export function QuoteStrip({
           <Link href="/contact" className={btn}>
             Request a quote
           </Link>
-          <a href="tel:+19788158354" className={btnOutline}>
-            Call (978) 815-8354
+          <a href="tel:+16033967828" className={btnOutline}>
+            Call 603-396-7828
           </a>
         </div>
       </div>

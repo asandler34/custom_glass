@@ -7,7 +7,7 @@ import { withCanonical } from "@/lib/seo/metadata-helpers";
 export const metadata: Metadata = withCanonical("/contact", {
   title: "Contact & Free Estimate | Exquisite Custom Glass | Haverhill MA",
   description:
-    "Request a free estimate: custom shower glass, railings, mirrors. (978) 815-8354. Haverhill, MA. Serving the North Shore, Boston, and southern New Hampshire within our service area.",
+    "Request a free estimate: custom shower glass, railings, mirrors. 603-396-7828. Haverhill, MA. Serving the North Shore, Boston, and southern New Hampshire within our service area.",
 });
 
 const PHONE_DISPLAY = BUSINESS.phoneDisplay;

@@ -25,10 +25,10 @@ export default function ThankYouPage() {
           Our team will review your details and follow up as soon as possible with next steps.
           If your project is time-sensitive, call us directly at{" "}
           <a
-            href="tel:+19788158354"
+            href="tel:+16033967828"
             className="underline underline-offset-4 hover:text-gold"
           >
-            (978) 815-8354
+            603-396-7828
           </a>
           .
         </p>

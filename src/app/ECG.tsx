@@ -375,10 +375,10 @@ function Nav({ scrolled }: { scrolled: boolean }) {
               {l}
             </a>
           ))}
-          <a href="tel:+19788158354" style={{
+          <a href="tel:+16033967828" style={{
             fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "1px",
             color: "rgba(255,255,255,0.5)", textDecoration: "none",
-          }}>(978) 815-8354</a>
+          }}>603-396-7828</a>
           <a href="#contact" style={{
             fontFamily: "var(--font-body), sans-serif", fontSize: "10px", letterSpacing: "2px",
             textTransform: "uppercase", color: "#0A1628", background: "#C9A84C",
@@ -432,11 +432,11 @@ function Nav({ scrolled }: { scrolled: boolean }) {
               </a>
             ))}
             <a
-              href="tel:+19788158354"
+              href="tel:+16033967828"
               style={{ ...mobileLinkStyle, marginTop: "8px" }}
               onClick={closeNav}
             >
-              (978) 815-8354
+              603-396-7828
             </a>
             <a
               href="#contact"
@@ -1303,7 +1303,7 @@ function Contact() {
       form.reset();
       setTimeout(() => setSubmitted(false), 5000);
     } catch {
-      setError("Could not send right now. Please call (978) 815-8354.");
+      setError("Could not send right now. Please call 603-396-7828.");
     } finally {
       setSubmitting(false);
     }

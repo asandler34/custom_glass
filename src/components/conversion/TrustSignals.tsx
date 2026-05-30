@@ -19,9 +19,9 @@ export function GbpCta() {
       Prefer the phone?{" "}
       <a
         className="font-medium text-gold underline-offset-2 hover:underline"
-        href="tel:+19788158354"
+        href="tel:+16033967828"
       >
-        (978) 815-8354
+        603-396-7828
       </a>{" "}
       — same team that answers the shop line. Free on-site estimate when we are a fit for your
       project.
